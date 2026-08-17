@@ -1,0 +1,127 @@
+.card {
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all var(--transition-speed) ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card:hover {
+  border-color: var(--accent-secondary);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transform: translateY(-4px);
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.productImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-speed) ease;
+}
+
+.card:hover .productImage {
+  transform: scale(1.05);
+}
+
+.placeholderImage {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-secondary);
+  background-image: 
+    radial-gradient(circle at center, rgba(var(--accent-rgb), 0.1) 0%, transparent 60%),
+    linear-gradient(rgba(var(--accent-rgb), 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.05) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(var(--accent-rgb), 0.15) 30px, transparent 31px),
+    radial-gradient(circle at center, transparent 40px, rgba(var(--accent-rgb), 0.2) 41px, rgba(var(--accent-rgb), 0.2) 42px, transparent 43px);
+  background-size: 100% 100%, 20px 20px, 20px 20px, 100% 100%, 100% 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+}
+
+.category {
+  font-size: 0.75rem;
+  color: var(--accent-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.price {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: var(--spacing-md);
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+  flex-grow: 1;
+}
+
+.specItem {
+  font-size: 0.875rem;
+  background-color: rgba(255, 255, 255, 0.02);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+}
+
+.specLabel {
+  color: var(--text-muted);
+  margin-right: var(--spacing-xs);
+}
+
+.specValue {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
+.actions {
+  margin-top: auto;
+}
+
+.actionRow {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-direction: column;
+}
+
+@media (min-width: 480px) {
+  .actionRow {
+    flex-direction: row;
+  }
+}

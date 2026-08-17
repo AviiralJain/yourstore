@@ -1,69 +1,252 @@
-import Image from "next/image";
+import React from 'react';
+import { Navbar } from './components/Navbar';
+import { Footer } from './components/Footer';
+import { Container } from './components/Container';
+import { SectionHeading } from './components/SectionHeading';
+import { Button } from './components/Button';
+import { ProductCard } from './components/ProductCard';
+import { CategoryStrip } from './components/CategoryStrip';
+import { ProjectCard } from './components/ProjectCard';
+import styles from './page.module.css';
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+    <>
+      <Navbar />
+      
+      <main>
+        {/* HERO SECTION */}
+        <section className={styles.heroSection}>
+          <div className={styles.heroOverlay}></div>
+          <Container>
+            <div className={styles.heroGrid}>
+              <div className={styles.heroContent}>
+                <span className={styles.eyebrow}>BUILD. FLY. EXPLORE.</span>
+                <h1 className={styles.heroTitle}>
+                  PREMIUM DRONE<br />
+                  <span className={styles.heroHighlight}>PARTS & COMPONENTS</span>
+                </h1>
+                <p className={styles.heroDesc}>
+                  Quality drone components for builders, engineers, students and professionals.
+                </p>
+                
+                <div className={styles.heroActions}>
+                  <Button variant="primary" size="lg">EXPLORE PRODUCTS &rarr;</Button>
+                  <Button variant="outline" size="lg">BUILD YOUR PROJECT</Button>
+                </div>
+
+                <div className={styles.trustRow}>
+                  <div className={styles.trustItem}>Quality Components</div>
+                  <div className={styles.trustItem}>Expert Support</div>
+                  <div className={styles.trustItem}>Custom Solutions</div>
+                </div>
+              </div>
+            </div>
+          </Container>
+        </section>
+
+        <CategoryStrip />
+
+        {/* FEATURED PRODUCTS */}
+        <section className={styles.section} id="products">
+          <Container>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 'var(--spacing-2xl)' }}>
+              <SectionHeading 
+                title="FEATURED PRODUCTS" 
+                subtitle="Explore our top-rated drone components."
+              />
+              <a href="#all-products" style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'none' }}>
+                View All Products &rarr;
+              </a>
+            </div>
+            
+            <div className={styles.grid4}>
+              <ProductCard 
+                title="T-Motor F2207 1750KV Brushless Motor"
+                category="Motors & Propellers"
+                price="₹1,599"
+                image="/images/products/motor.jpg"
+                specs={[
+                  { label: 'KV', value: '1750' },
+                  { label: 'Weight', value: '34g' }
+                ]}
+              />
+              <ProductCard 
+                title="Hobbywing 40A 4-in-1 ESC"
+                category="ESCs"
+                price="₹2,999"
+                image="/images/products/esc.jpg"
+                specs={[
+                  { label: 'Current', value: '40A' },
+                  { label: 'Input', value: '3-6S' }
+                ]}
+              />
+              <ProductCard 
+                title="Kakute F7 Flight Controller"
+                category="Flight Controllers"
+                price="₹5,499"
+                image="/images/products/flight-controller.jpg"
+                specs={[
+                  { label: 'MCU', value: 'STM32F745' },
+                  { label: 'Gyro', value: 'MPU6000' }
+                ]}
+              />
+              <ProductCard 
+                title="Gemfan 51466 Propellers"
+                category="Motors & Propellers"
+                price="₹299"
+                image="/images/products/propeller.jpg"
+                specs={[
+                  { label: 'Size', value: '5.1 inch' },
+                  { label: 'Pitch', value: '4.6' }
+                ]}
+              />
+              <ProductCard 
+                title="Mark 4 7 Inch Drone Frame"
+                category="Frames"
+                price="₹1,899"
+                specs={[
+                  { label: 'Material', value: 'Carbon Fiber' },
+                  { label: 'Size', value: '7 inch' }
+                ]}
+              />
+            </div>
+          </Container>
+        </section>
+
+        {/* SHOP BY CATEGORY */}
+        <section className={`${styles.section} ${styles.sectionDark}`}>
+          <Container>
+            <SectionHeading 
+              title="SHOP BY CATEGORY" 
+              subtitle="Browse high-quality parts for your next build."
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            
+            <div className={styles.grid3}>
+              <a href="#motors" className={styles.categoryCardLarge}>
+                <img src="/images/products/motor.jpg" className={styles.categoryCardImage} alt="Motors" />
+                <h3>Motors & Propellers</h3>
+                <p>High-efficiency thrust systems.</p>
+              </a>
+              <a href="#fcs" className={styles.categoryCardLarge}>
+                <img src="/images/products/flight-controller.jpg" className={styles.categoryCardImage} alt="Flight Controllers" />
+                <h3>Flight Controllers</h3>
+                <p>Advanced stability and autonomy.</p>
+              </a>
+              <a href="#escs" className={styles.categoryCardLarge}>
+                <img src="/images/products/esc.jpg" className={styles.categoryCardImage} alt="ESCs" />
+                <h3>ESCs</h3>
+                <p>Precision motor management.</p>
+              </a>
+              <a href="#frames" className={styles.categoryCardLarge}>
+                <h3>Frames</h3>
+                <p>Durable carbon fiber builds.</p>
+              </a>
+              <a href="#sensors" className={styles.categoryCardLarge}>
+                <h3>Sensors</h3>
+                <p>GPS, LiDAR and optical flow.</p>
+              </a>
+              <a href="#fpv" className={styles.categoryCardLarge}>
+                <h3>FPV & Communication</h3>
+                <p>VTX, receivers and antennas.</p>
+              </a>
+            </div>
+          </Container>
+        </section>
+
+        {/* OUR PROJECTS */}
+        <section className={styles.section} id="projects">
+          <Container>
+            <SectionHeading 
+              title="BUILT FOR REAL-WORLD MISSIONS" 
+              subtitle="Explore UAV projects and solutions developed for different applications."
+            />
+            
+            <div className={styles.grid3}>
+              <ProjectCard 
+                title="Agricultural Mapping UAV"
+                client="Agriculture"
+                image="/images/projects/agriculture.jpg"
+                description="A custom fixed-wing VTOL platform designed for multispectral imaging and crop health analysis."
+              />
+              <ProjectCard 
+                title="Industrial Inspection Drone"
+                client="Infrastructure"
+                image="/images/projects/inspection.jpg"
+                description="Heavy-duty quadcopter with thermal imaging and obstacle avoidance for power line inspection."
+              />
+              <ProjectCard 
+                title="Autonomous Surveillance Drone"
+                client="Security"
+                image="/images/projects/surveillance.jpg"
+                description="Tethered and free-flight capable surveillance platform with AI-based subject tracking."
+              />
+            </div>
+          </Container>
+        </section>
+
+        {/* CUSTOM PROJECT CTA */}
+        <section className={styles.section} id="custom-projects">
+          <Container>
+            <div className={styles.ctaBox}>
+              <h2 className={styles.ctaTitle}>HAVE A DRONE PROJECT IN MIND?</h2>
+              <p className={styles.ctaDesc}>
+                Tell us what you're building. From college projects to custom UAV solutions, our team can help turn your idea into a working system.
+              </p>
+              <div className={styles.ctaActions}>
+                <Button variant="primary" size="lg">START YOUR PROJECT</Button>
+                <Button variant="secondary" size="lg">CHAT ON WHATSAPP</Button>
+              </div>
+            </div>
+          </Container>
+        </section>
+
+        {/* WHY YOURSTORE */}
+        <section className={`${styles.section} ${styles.sectionDark}`} id="about">
+          <Container>
+            <div className={styles.grid4}>
+              <div className={styles.whyItem}>
+                <div className={styles.whyNumber}>01</div>
+                <h3 className={styles.whyTitle}>QUALITY COMPONENTS</h3>
+                <p className={styles.whyDesc}>Reliable drone hardware and components.</p>
+              </div>
+              <div className={styles.whyItem}>
+                <div className={styles.whyNumber}>02</div>
+                <h3 className={styles.whyTitle}>EXPERT SUPPORT</h3>
+                <p className={styles.whyDesc}>Technical guidance when you need it.</p>
+              </div>
+              <div className={styles.whyItem}>
+                <div className={styles.whyNumber}>03</div>
+                <h3 className={styles.whyTitle}>CUSTOM SOLUTIONS</h3>
+                <p className={styles.whyDesc}>From idea to working UAV project.</p>
+              </div>
+              <div className={styles.whyItem}>
+                <div className={styles.whyNumber}>04</div>
+                <h3 className={styles.whyTitle}>DIRECT ASSISTANCE</h3>
+                <p className={styles.whyDesc}>Talk directly with our team through WhatsApp.</p>
+              </div>
+            </div>
+          </Container>
+        </section>
+
+        {/* FINAL CTA */}
+        <section className={styles.section}>
+          <Container>
+            <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: 'var(--spacing-md)' }}>READY TO BUILD?</h2>
+              <p style={{ fontSize: '1.125rem', color: 'var(--text-muted)', marginBottom: 'var(--spacing-xl)' }}>
+                Explore our components or tell us about your next UAV project.
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--spacing-md)' }}>
+                <Button variant="primary">EXPLORE PRODUCTS</Button>
+                <Button variant="outline">CONTACT US</Button>
+              </div>
+            </div>
+          </Container>
+        </section>
       </main>
-    </div>
+      
+      <Footer />
+    </>
   );
 }
