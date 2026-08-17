@@ -7,6 +7,8 @@ import { Button } from './components/Button';
 import { ProductCard } from './components/ProductCard';
 import { CategoryStrip } from './components/CategoryStrip';
 import { ProjectCard } from './components/ProjectCard';
+import { ProductCarousel } from './components/ProductCarousel';
+import { AIChat } from './components/AIChat';
 import styles from './page.module.css';
 import { WHATSAPP_NUMBER } from './lib/contact';
 
@@ -53,15 +55,15 @@ export default function Home() {
           <Container>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 'var(--spacing-2xl)' }}>
               <SectionHeading 
-                title="FEATURED PRODUCTS" 
-                subtitle="Explore our top-rated drone components."
+                title="FEATURED COMPONENTS" 
+                subtitle="Popular drone hardware for your next build."
               />
               <a href="#all-products" style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'none' }}>
-                View All Products &rarr;
+                VIEW ALL PRODUCTS &rarr;
               </a>
             </div>
             
-            <div className={styles.grid4}>
+            <ProductCarousel>
               <ProductCard 
                 title="T-Motor F2207 1750KV Brushless Motor"
                 category="Motors & Propellers"
@@ -111,7 +113,7 @@ export default function Home() {
                   { label: 'Size', value: '7 inch' }
                 ]}
               />
-            </div>
+            </ProductCarousel>
           </Container>
         </section>
 
@@ -251,6 +253,7 @@ export default function Home() {
         </section>
       </main>
       
+      <AIChat />
       <Footer />
     </>
   );

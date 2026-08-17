@@ -37,14 +37,14 @@ export const Navbar: React.FC = () => {
           
           <div className={styles.mobileAction}>
             <ThemeToggle />
-            <WhatsAppButton phoneNumber="0000000000" label="Enquire Now" />
+            <WhatsAppButton label="Enquire Now" />
           </div>
         </div>
         
         <div className={styles.actions}>
           <div className={styles.desktopAction}>
             <ThemeToggle />
-            <WhatsAppButton phoneNumber="0000000000" label="WhatsApp" />
+            <WhatsAppButton label="WhatsApp" />
           </div>
           
           <button 

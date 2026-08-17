@@ -10,6 +10,10 @@
   font-weight: 600;
   transition: all var(--transition-speed) ease-in-out;
   text-decoration: none;
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .whatsappButton:hover {
@@ -19,4 +23,5 @@
 
 .icon {
   flex-shrink: 0;
+  pointer-events: none;
 }
