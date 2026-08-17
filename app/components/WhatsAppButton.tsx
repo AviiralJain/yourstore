@@ -1,14 +1,15 @@
 import React from 'react';
 import styles from './WhatsAppButton.module.css';
+import { WHATSAPP_NUMBER } from '../lib/contact';
 
 interface WhatsAppButtonProps {
-  phoneNumber: string;
+  phoneNumber?: string;
   message?: string;
   label?: string;
 }
 
 export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({ 
-  phoneNumber, 
+  phoneNumber = WHATSAPP_NUMBER, 
   message = "Hello, I would like to enquire about your drone solutions.", 
   label = "Enquire on WhatsApp" 
 }) => {

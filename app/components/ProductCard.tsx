@@ -1,7 +1,7 @@
 import React from 'react';
-import Image from 'next/image';
 import styles from './ProductCard.module.css';
 import { Button } from './Button';
+import { WHATSAPP_NUMBER } from '../lib/contact';
 
 interface ProductCardProps {
   title: string;
@@ -20,6 +20,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   image,
   onEnquire
 }) => {
+  const message = `Hi YOURSTORE, I'm interested in ${title}. Please share availability and pricing.`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
@@ -52,9 +55,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <Button variant="outline" fullWidth style={{ flex: 1 }}>
               View Details
             </Button>
-            <Button variant="primary" fullWidth style={{ flex: 1 }} onClick={onEnquire}>
-              Enquire on WhatsApp
-            </Button>
+            <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" style={{ flex: 1, display: 'block' }}>
+              <Button variant="primary" fullWidth style={{ pointerEvents: 'none' }}>
+                Enquire on WhatsApp
+              </Button>
+            </a>
           </div>
         </div>
       </div>

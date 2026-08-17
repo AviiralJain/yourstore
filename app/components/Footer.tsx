@@ -2,6 +2,7 @@ import React from 'react';
 import { Container } from './Container';
 import styles from './Footer.module.css';
 import Link from 'next/link';
+import { PHONE_DISPLAY, EMAIL, WHATSAPP_NUMBER } from '../lib/contact';
 
 export const Footer: React.FC = () => {
   return (
@@ -41,8 +42,15 @@ export const Footer: React.FC = () => {
           
           <div className={styles.column}>
             <h4 className={styles.columnTitle}>Contact</h4>
-            <p className={styles.text}>WhatsApp: [Add number]</p>
-            <p className={styles.text}>Email: [Add business email]</p>
+            <p className={styles.text}>
+              <a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer">WhatsApp: Chat with us</a>
+            </p>
+            <p className={styles.text}>
+              <a href={`tel:${PHONE_DISPLAY.replace(/\s+/g, '')}`}>Phone: {PHONE_DISPLAY}</a>
+            </p>
+            <p className={styles.text}>
+              <a href={`mailto:${EMAIL}`}>Email: {EMAIL}</a>
+            </p>
           </div>
         </div>
         

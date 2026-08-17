@@ -8,6 +8,7 @@ import { ProductCard } from './components/ProductCard';
 import { CategoryStrip } from './components/CategoryStrip';
 import { ProjectCard } from './components/ProjectCard';
 import styles from './page.module.css';
+import { WHATSAPP_NUMBER } from './lib/contact';
 
 export default function Home() {
   return (
@@ -195,7 +196,9 @@ export default function Home() {
               </p>
               <div className={styles.ctaActions}>
                 <Button variant="primary" size="lg">START YOUR PROJECT</Button>
-                <Button variant="secondary" size="lg">CHAT ON WHATSAPP</Button>
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi YOURSTORE, I have a drone project requirement. I'd like to discuss it with your team.")}`} target="_blank" rel="noopener noreferrer">
+                  <Button variant="secondary" size="lg" style={{ pointerEvents: 'none' }}>CHAT ON WHATSAPP</Button>
+                </a>
               </div>
             </div>
           </Container>
@@ -239,7 +242,9 @@ export default function Home() {
               </p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--spacing-md)' }}>
                 <Button variant="primary">EXPLORE PRODUCTS</Button>
-                <Button variant="outline">CONTACT US</Button>
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi YOURSTORE, I'd like to discuss a project.")}`} target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" style={{ pointerEvents: 'none' }}>CONTACT US</Button>
+                </a>
               </div>
             </div>
           </Container>
