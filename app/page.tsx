@@ -5,9 +5,9 @@ import { Container } from './components/Container';
 import { SectionHeading } from './components/SectionHeading';
 import { Button } from './components/Button';
 import { ProductCard } from './components/ProductCard';
-import { CategoryStrip } from './components/CategoryStrip';
 import { ProjectCard } from './components/ProjectCard';
 import { ProductCarousel } from './components/ProductCarousel';
+import { CategoryExplorer } from './components/CategoryExplorer';
 import { AIChat } from './components/AIChat';
 import styles from './page.module.css';
 import { WHATSAPP_NUMBER } from './lib/contact';
@@ -48,7 +48,17 @@ export default function Home() {
           </Container>
         </section>
 
-        <CategoryStrip />
+        {/* SHOP BY CATEGORY */}
+        <section className={`${styles.section} ${styles.sectionDark}`}>
+          <Container>
+            <SectionHeading 
+              title="SHOP BY CATEGORY" 
+              subtitle="Explore components and hardware for drones, robotics and custom builds."
+            />
+            
+            <CategoryExplorer />
+          </Container>
+        </section>
 
         {/* FEATURED PRODUCTS */}
         <section className={styles.section} id="products">
@@ -67,6 +77,8 @@ export default function Home() {
               <ProductCard 
                 title="T-Motor F2207 1750KV Brushless Motor"
                 category="Motors & Propellers"
+                mainCategory="drone"
+                subCategory="motors"
                 price="₹1,599"
                 image="/images/products/motor.jpg"
                 specs={[
@@ -77,6 +89,8 @@ export default function Home() {
               <ProductCard 
                 title="Hobbywing 40A 4-in-1 ESC"
                 category="ESCs"
+                mainCategory="drone"
+                subCategory="escs"
                 price="₹2,999"
                 image="/images/products/esc.jpg"
                 specs={[
@@ -87,6 +101,8 @@ export default function Home() {
               <ProductCard 
                 title="Kakute F7 Flight Controller"
                 category="Flight Controllers"
+                mainCategory="drone"
+                subCategory="fcs"
                 price="₹5,499"
                 image="/images/products/flight-controller.jpg"
                 specs={[
@@ -97,6 +113,8 @@ export default function Home() {
               <ProductCard 
                 title="Gemfan 51466 Propellers"
                 category="Motors & Propellers"
+                mainCategory="drone"
+                subCategory="propellers"
                 price="₹299"
                 image="/images/products/propeller.jpg"
                 specs={[
@@ -107,6 +125,8 @@ export default function Home() {
               <ProductCard 
                 title="Mark 4 7 Inch Drone Frame"
                 category="Frames"
+                mainCategory="drone"
+                subCategory="frames"
                 price="₹1,899"
                 specs={[
                   { label: 'Material', value: 'Carbon Fiber' },
@@ -114,46 +134,6 @@ export default function Home() {
                 ]}
               />
             </ProductCarousel>
-          </Container>
-        </section>
-
-        {/* SHOP BY CATEGORY */}
-        <section className={`${styles.section} ${styles.sectionDark}`}>
-          <Container>
-            <SectionHeading 
-              title="SHOP BY CATEGORY" 
-              subtitle="Browse high-quality parts for your next build."
-            />
-            
-            <div className={styles.grid3}>
-              <a href="#motors" className={styles.categoryCardLarge}>
-                <img src="/images/products/motor.jpg" className={styles.categoryCardImage} alt="Motors" />
-                <h3>Motors & Propellers</h3>
-                <p>High-efficiency thrust systems.</p>
-              </a>
-              <a href="#fcs" className={styles.categoryCardLarge}>
-                <img src="/images/products/flight-controller.jpg" className={styles.categoryCardImage} alt="Flight Controllers" />
-                <h3>Flight Controllers</h3>
-                <p>Advanced stability and autonomy.</p>
-              </a>
-              <a href="#escs" className={styles.categoryCardLarge}>
-                <img src="/images/products/esc.jpg" className={styles.categoryCardImage} alt="ESCs" />
-                <h3>ESCs</h3>
-                <p>Precision motor management.</p>
-              </a>
-              <a href="#frames" className={styles.categoryCardLarge}>
-                <h3>Frames</h3>
-                <p>Durable carbon fiber builds.</p>
-              </a>
-              <a href="#sensors" className={styles.categoryCardLarge}>
-                <h3>Sensors</h3>
-                <p>GPS, LiDAR and optical flow.</p>
-              </a>
-              <a href="#fpv" className={styles.categoryCardLarge}>
-                <h3>FPV & Communication</h3>
-                <p>VTX, receivers and antennas.</p>
-              </a>
-            </div>
           </Container>
         </section>
 

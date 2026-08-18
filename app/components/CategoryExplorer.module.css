@@ -1,0 +1,178 @@
+.explorerContainer {
+  width: 100%;
+  margin-top: var(--spacing-xl);
+}
+
+.cardsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.categoryColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  flex: 1;
+}
+
+.categoryCard {
+  position: relative;
+  min-height: 280px;
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+  transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.categoryCard:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.1);
+}
+
+.cardActive {
+  border-color: var(--accent-primary);
+}
+
+.imageWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.categoryCard:hover .cardImage {
+  transform: scale(1.05);
+}
+
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5,7,5,0.95) 0%, rgba(5,7,5,0.7) 40%, rgba(5,7,5,0.2) 100%);
+}
+
+[data-theme="light"] .cardOverlay {
+  background: linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.1) 100%);
+}
+
+.cardContent {
+  position: relative;
+  z-index: 10;
+  padding: var(--spacing-2xl) var(--spacing-xl);
+}
+
+.cardTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.cardDesc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-md);
+  max-width: 90%;
+}
+
+.cardCta {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  letter-spacing: 0.05em;
+}
+
+/* Subcategories Panel */
+.subcategoriesPanel {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  background-color: var(--bg-secondary);
+  border: 1px solid transparent;
+}
+
+.panelExpanded {
+  max-height: 400px;
+  opacity: 1;
+  border-color: var(--border-color);
+}
+
+.panelContent {
+  padding: var(--spacing-xl);
+}
+
+.panelHeader h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.1em;
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: var(--spacing-md) 0 var(--spacing-lg);
+  width: 100%;
+}
+
+.subList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-lg) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.subItem {
+  display: block;
+}
+
+.subLink {
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color var(--transition-speed) ease;
+}
+
+.subLink:hover {
+  color: var(--accent-primary);
+}
+
+.viewAllCta {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--accent-bright);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: color var(--transition-speed) ease;
+}
+
+.viewAllCta:hover {
+  color: var(--accent-primary);
+}
+
+/* Desktop Layout */
+@media (min-width: 768px) {
+  .cardsGrid {
+    flex-direction: row;
+  }
+  
+  .categoryCard {
+    min-height: 360px;
+  }
+}

@@ -9,6 +9,8 @@ interface ProductCardProps {
   price: string;
   specs: { label: string; value: string }[];
   image?: string;
+  mainCategory?: string;
+  subCategory?: string;
   onEnquire?: () => void;
 }
 
@@ -18,6 +20,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   price,
   specs,
   image,
+  mainCategory,
+  subCategory,
   onEnquire
 }) => {
   const message = `Hi YOURSTORE, I'm interested in ${title}. Please share availability and pricing.`;
