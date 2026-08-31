@@ -7,15 +7,17 @@ interface ProjectCardProps {
   client: string;
   description: string;
   image?: string;
+  slug?: string;
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
   client,
   description,
-  image
+  image,
+  slug
 }) => {
-  return (
+  const CardContent = (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
         {image ? (
@@ -34,4 +36,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
       </div>
     </div>
   );
+
+  return slug ? (
+    <a href={`/projects/${slug}`} style={{ textDecoration: 'none', display: 'block' }}>
+      {CardContent}
+    </a>
+  ) : CardContent;
 };

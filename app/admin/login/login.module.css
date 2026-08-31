@@ -1,0 +1,99 @@
+.loginContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-main);
+  padding: var(--spacing-md);
+}
+
+.loginCard {
+  background-color: var(--surface-dark);
+  border: 1px solid var(--border-color);
+  padding: var(--spacing-2xl);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--accent-primary);
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.title {
+  font-size: 1.25rem;
+  color: var(--text-main);
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.error {
+  background-color: rgba(255, 68, 68, 0.1);
+  color: #ff4444;
+  padding: var(--spacing-sm);
+  border-radius: 4px;
+  margin-bottom: var(--spacing-md);
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.inputGroup label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.input {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--accent-primary);
+}
+
+.button {
+  background-color: var(--accent-primary);
+  color: #050705;
+  border: none;
+  padding: 0.875rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  margin-top: var(--spacing-sm);
+}
+
+.button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

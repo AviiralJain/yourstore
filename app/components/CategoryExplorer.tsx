@@ -1,15 +1,58 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './CategoryExplorer.module.css';
-import { categories } from '../data/categories';
 
 export const CategoryExplorer: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/categories')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch categories');
+        return res.json();
+      })
+      .then(data => {
+        setCategories(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setError(true);
+        setLoading(false);
+      });
+  }, []);
 
   const handleCategoryClick = (categoryId: string) => {
     setActiveCategory(prev => prev === categoryId ? null : categoryId);
   };
+
+  if (loading) {
+    return (
+      <div className={styles.explorerContainer} style={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: 'var(--text-muted)' }}>Loading categories...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.explorerContainer} style={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: 'var(--text-muted)' }}>Products are currently being updated.</p>
+      </div>
+    );
+  }
+
+  if (categories.length === 0) {
+    return (
+      <div className={styles.explorerContainer} style={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: 'var(--text-muted)' }}>No categories available yet.</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.explorerContainer}>
@@ -27,7 +70,11 @@ export const CategoryExplorer: React.FC = () => {
                 aria-expanded={isActive}
               >
                 <div className={styles.imageWrapper}>
-                  <img src={category.image} alt={category.name} className={styles.cardImage} />
+                  {category.image ? (
+                    <img src={category.image} alt={category.name} className={styles.cardImage} />
+                  ) : (
+                    <div className={styles.cardImage} style={{ background: 'var(--surface-color)' }}></div>
+                  )}
                   <div className={styles.cardOverlay}></div>
                 </div>
                 
@@ -48,16 +95,20 @@ export const CategoryExplorer: React.FC = () => {
                     <div className={styles.divider}></div>
                   </div>
                   
-                  <ul className={styles.subList}>
-                    {category.subcategories.map(sub => (
-                      <li key={sub.id} className={styles.subItem}>
-                        <a href="#" className={styles.subLink}>[ {sub.name} ]</a>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <a href="#" className={styles.viewAllCta}>
-                    VIEW ALL {category.name} PRODUCTS &rarr;
+                  {category.subcategories && category.subcategories.length > 0 ? (
+                    <ul className={styles.subList}>
+                      {category.subcategories.map((sub: any) => (
+                        <li key={sub.id} className={styles.subItem}>
+                          <a href={`/#categories`} className={styles.subLink}>[ {sub.name} ]</a>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className={styles.emptyState}>No subcategories yet.</div>
+                  )}
+                  
+                  <a href={`/#categories`} className={styles.viewAllCta}>
+                    VIEW ALL IN {category.name} &rarr;
                   </a>
                 </div>
               </div>

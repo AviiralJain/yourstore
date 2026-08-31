@@ -4,9 +4,8 @@ import { Footer } from './components/Footer';
 import { Container } from './components/Container';
 import { SectionHeading } from './components/SectionHeading';
 import { Button } from './components/Button';
-import { ProductCard } from './components/ProductCard';
-import { ProjectCard } from './components/ProjectCard';
-import { ProductCarousel } from './components/ProductCarousel';
+import { FeaturedProductsCarousel } from './components/FeaturedProductsCarousel';
+import { ProjectsSection } from './components/ProjectsSection';
 import { CategoryExplorer } from './components/CategoryExplorer';
 import { AIChat } from './components/AIChat';
 import styles from './page.module.css';
@@ -35,7 +34,9 @@ export default function Home() {
                 
                 <div className={styles.heroActions}>
                   <Button variant="primary" size="lg">EXPLORE PRODUCTS &rarr;</Button>
-                  <Button variant="outline" size="lg">BUILD YOUR PROJECT</Button>
+                  <a href="/build-your-project" style={{ textDecoration: 'none' }}>
+                    <Button variant="outline" size="lg" style={{ pointerEvents: 'none' }}>BUILD YOUR PROJECT</Button>
+                  </a>
                 </div>
 
                 <div className={styles.trustRow}>
@@ -49,7 +50,7 @@ export default function Home() {
         </section>
 
         {/* SHOP BY CATEGORY */}
-        <section className={`${styles.section} ${styles.sectionDark}`}>
+        <section className={`${styles.section} ${styles.sectionDark}`} id="categories">
           <Container>
             <SectionHeading 
               title="SHOP BY CATEGORY" 
@@ -73,67 +74,7 @@ export default function Home() {
               </a>
             </div>
             
-            <ProductCarousel>
-              <ProductCard 
-                title="T-Motor F2207 1750KV Brushless Motor"
-                category="Motors & Propellers"
-                mainCategory="drone"
-                subCategory="motors"
-                price="₹1,599"
-                image="/images/products/motor.jpg"
-                specs={[
-                  { label: 'KV', value: '1750' },
-                  { label: 'Weight', value: '34g' }
-                ]}
-              />
-              <ProductCard 
-                title="Hobbywing 40A 4-in-1 ESC"
-                category="ESCs"
-                mainCategory="drone"
-                subCategory="escs"
-                price="₹2,999"
-                image="/images/products/esc.jpg"
-                specs={[
-                  { label: 'Current', value: '40A' },
-                  { label: 'Input', value: '3-6S' }
-                ]}
-              />
-              <ProductCard 
-                title="Kakute F7 Flight Controller"
-                category="Flight Controllers"
-                mainCategory="drone"
-                subCategory="fcs"
-                price="₹5,499"
-                image="/images/products/flight-controller.jpg"
-                specs={[
-                  { label: 'MCU', value: 'STM32F745' },
-                  { label: 'Gyro', value: 'MPU6000' }
-                ]}
-              />
-              <ProductCard 
-                title="Gemfan 51466 Propellers"
-                category="Motors & Propellers"
-                mainCategory="drone"
-                subCategory="propellers"
-                price="₹299"
-                image="/images/products/propeller.jpg"
-                specs={[
-                  { label: 'Size', value: '5.1 inch' },
-                  { label: 'Pitch', value: '4.6' }
-                ]}
-              />
-              <ProductCard 
-                title="Mark 4 7 Inch Drone Frame"
-                category="Frames"
-                mainCategory="drone"
-                subCategory="frames"
-                price="₹1,899"
-                specs={[
-                  { label: 'Material', value: 'Carbon Fiber' },
-                  { label: 'Size', value: '7 inch' }
-                ]}
-              />
-            </ProductCarousel>
+            <FeaturedProductsCarousel />
           </Container>
         </section>
 
@@ -145,26 +86,7 @@ export default function Home() {
               subtitle="Explore UAV projects and solutions developed for different applications."
             />
             
-            <div className={styles.grid3}>
-              <ProjectCard 
-                title="Agricultural Mapping UAV"
-                client="Agriculture"
-                image="/images/projects/agriculture.jpg"
-                description="A custom fixed-wing VTOL platform designed for multispectral imaging and crop health analysis."
-              />
-              <ProjectCard 
-                title="Industrial Inspection Drone"
-                client="Infrastructure"
-                image="/images/projects/inspection.jpg"
-                description="Heavy-duty quadcopter with thermal imaging and obstacle avoidance for power line inspection."
-              />
-              <ProjectCard 
-                title="Autonomous Surveillance Drone"
-                client="Security"
-                image="/images/projects/surveillance.jpg"
-                description="Tethered and free-flight capable surveillance platform with AI-based subject tracking."
-              />
-            </div>
+            <ProjectsSection />
           </Container>
         </section>
 
@@ -177,7 +99,9 @@ export default function Home() {
                 Tell us what you're building. From college projects to custom UAV solutions, our team can help turn your idea into a working system.
               </p>
               <div className={styles.ctaActions}>
-                <Button variant="primary" size="lg">START YOUR PROJECT</Button>
+                <a href="/build-your-project" style={{ textDecoration: 'none' }}>
+                  <Button variant="primary" size="lg" style={{ pointerEvents: 'none' }}>START YOUR PROJECT</Button>
+                </a>
                 <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi YOURSTORE, I have a drone project requirement. I'd like to discuss it with your team.")}`} target="_blank" rel="noopener noreferrer">
                   <Button variant="secondary" size="lg" style={{ pointerEvents: 'none' }}>CHAT ON WHATSAPP</Button>
                 </a>

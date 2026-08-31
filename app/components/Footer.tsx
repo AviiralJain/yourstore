@@ -20,18 +20,14 @@ export const Footer: React.FC = () => {
           
           <div className={styles.column}>
             <h4 className={styles.columnTitle}>Products</h4>
-            <Link href="#" className={styles.link}>Motors</Link>
-            <Link href="#" className={styles.link}>ESCs</Link>
-            <Link href="#" className={styles.link}>Flight Controllers</Link>
-            <Link href="#" className={styles.link}>Propellers</Link>
-            <Link href="#" className={styles.link}>Sensors</Link>
-            <Link href="#" className={styles.link}>Frames</Link>
+            <Link href="/#products" className={styles.link}>Featured Components</Link>
+            <Link href="/#categories" className={styles.link}>Shop by Category</Link>
           </div>
           
           <div className={styles.column}>
             <h4 className={styles.columnTitle}>Projects</h4>
-            <Link href="#" className={styles.link}>Ready Projects</Link>
-            <Link href="#" className={styles.link}>Custom Projects</Link>
+            <Link href="/#projects" className={styles.link}>Our Projects</Link>
+            <Link href="/build-your-project" className={styles.link}>Custom Projects</Link>
           </div>
 
           <div className={styles.column}>

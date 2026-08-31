@@ -31,7 +31,7 @@ export const Navbar: React.FC = () => {
         <div className={`${styles.links} ${isOpen ? styles.open : ''}`}>
           <Link href="#products" className={styles.link} onClick={() => setIsOpen(false)}>Products</Link>
           <Link href="#projects" className={styles.link} onClick={() => setIsOpen(false)}>Projects</Link>
-          <Link href="#custom-projects" className={styles.link} onClick={() => setIsOpen(false)}>Build Your Project</Link>
+          <Link href="/build-your-project" className={styles.link} onClick={() => setIsOpen(false)}>Build Your Project</Link>
           <Link href="#about" className={styles.link} onClick={() => setIsOpen(false)}>About</Link>
           <Link href="#contact" className={styles.link} onClick={() => setIsOpen(false)}>Contact</Link>
           

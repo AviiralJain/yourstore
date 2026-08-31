@@ -11,6 +11,7 @@ interface ProductCardProps {
   image?: string;
   mainCategory?: string;
   subCategory?: string;
+  slug?: string;
   onEnquire?: () => void;
 }
 
@@ -22,6 +23,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   image,
   mainCategory,
   subCategory,
+  slug,
   onEnquire
 }) => {
   const message = `Hi YOURSTORE, I'm interested in ${title}. Please share availability and pricing.`;
@@ -56,9 +58,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         
         <div className={styles.actions}>
           <div className={styles.actionRow}>
-            <Button variant="outline" fullWidth style={{ flex: 1 }}>
-              View Details
-            </Button>
+            {slug ? (
+              <a href={`/products/${slug}`} style={{ flex: 1, display: 'block', textDecoration: 'none' }}>
+                <Button variant="outline" fullWidth style={{ pointerEvents: 'none' }}>
+                  View Details
+                </Button>
+              </a>
+            ) : (
+              <Button variant="outline" fullWidth style={{ flex: 1 }}>
+                View Details
+              </Button>
+            )}
             <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" style={{ flex: 1, display: 'block' }}>
               <Button variant="primary" fullWidth style={{ pointerEvents: 'none' }}>
                 Enquire on WhatsApp
