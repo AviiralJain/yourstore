@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../login/login.module.css';
+import { ImageUploader } from './ImageUploader';
 
 export default function SubcategoryForm({ subcategory, categories }: { subcategory?: any, categories: any[] }) {
   const router = useRouter();
@@ -85,8 +86,13 @@ export default function SubcategoryForm({ subcategory, categories }: { subcatego
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Image URL</label>
-          <input name="image" value={formData.image} onChange={handleChange} className={styles.input} placeholder="https://..." />
+          <label>Image</label>
+          <ImageUploader 
+            images={formData.image ? [formData.image] : []} 
+            onChange={(newImages) => setFormData(prev => ({ ...prev, image: newImages[0] || '' }))} 
+            folder="yourstore/subcategories"
+            multiple={false}
+          />
         </div>
 
         <div style={{ marginTop: '1rem' }}>

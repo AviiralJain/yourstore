@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../login/login.module.css';
+import { ImageUploader } from './ImageUploader';
 
 export default function CategoryForm({ category }: { category?: any }) {
   const router = useRouter();
@@ -77,9 +78,13 @@ export default function CategoryForm({ category }: { category?: any }) {
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Image URL</label>
-          <input name="image" value={formData.image} onChange={handleChange} className={styles.input} placeholder="https://..." />
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>TODO: Cloudinary upload integration</p>
+          <label>Image</label>
+          <ImageUploader 
+            images={formData.image ? [formData.image] : []} 
+            onChange={(newImages) => setFormData(prev => ({ ...prev, image: newImages[0] || '' }))} 
+            folder="yourstore/categories"
+            multiple={false}
+          />
         </div>
 
         <div style={{ marginTop: '1rem' }}>

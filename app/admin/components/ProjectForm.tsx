@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../login/login.module.css';
+import { ImageUploader } from './ImageUploader';
 
 export default function ProjectForm({ project, categories }: { project?: any, categories: any[] }) {
   const router = useRouter();
@@ -123,15 +124,12 @@ export default function ProjectForm({ project, categories }: { project?: any, ca
 
         <div className={styles.inputGroup}>
           <label>Images</label>
-          {formData.images.map((img: string, idx: number) => (
-            <div key={idx} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              <input value={img} onChange={(e) => updateImage(idx, e.target.value)} placeholder="Image URL" className={styles.input} style={{ flex: 1 }} />
-              <button type="button" onClick={() => removeImage(idx)} style={{ padding: '0 0.5rem', background: '#ff4444', color: 'white', border: 'none', borderRadius: '4px' }}>X</button>
-            </div>
-          ))}
-          <button type="button" onClick={addImage} style={{ padding: '0.5rem', background: 'var(--border-color)', color: 'var(--text-main)', border: 'none', borderRadius: '4px', cursor: 'pointer', width: 'fit-content' }}>
-            + Add Image URL
-          </button>
+          <ImageUploader 
+            images={formData.images} 
+            onChange={(newImages) => setFormData(prev => ({ ...prev, images: newImages }))} 
+            folder="yourstore/projects"
+            multiple={true}
+          />
         </div>
 
         <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>

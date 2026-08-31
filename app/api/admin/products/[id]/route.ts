@@ -26,6 +26,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       delete updateQuery.subcategoryId;
       updateQuery.$unset = { subcategoryId: 1 };
     }
+    
+    if (data.stockQuantity === undefined && Object.prototype.hasOwnProperty.call(body, 'stockQuantity')) {
+      delete updateQuery.stockQuantity;
+      if (!updateQuery.$unset) updateQuery.$unset = {};
+      updateQuery.$unset.stockQuantity = 1;
+    }
 
     if (data.slug) {
       const existing = await Product.findOne({ slug: data.slug, _id: { $ne: id } });

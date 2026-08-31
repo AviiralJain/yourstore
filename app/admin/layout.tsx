@@ -11,7 +11,8 @@ import {
   MessageSquare, 
   LogOut,
   Menu,
-  X
+  X,
+  Bell
 } from 'lucide-react';
 import styles from './admin.module.css';
 
@@ -41,6 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Categories', path: '/admin/categories', icon: <FolderTree size={20} /> },
     { name: 'Projects', path: '/admin/projects', icon: <Briefcase size={20} /> },
     { name: 'Enquiries', path: '/admin/enquiries', icon: <MessageSquare size={20} /> },
+    { name: 'Stock Alerts', path: '/admin/stock-notifications', icon: <Bell size={20} /> },
   ];
 
   return (

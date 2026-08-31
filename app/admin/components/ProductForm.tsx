@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../login/login.module.css'; // Reuse form styles
-
+import { ImageUploader } from './ImageUploader';
 export default function ProductForm({ product, categories, subcategories }: { product?: any, categories: any[], subcategories: any[] }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,9 @@ export default function ProductForm({ product, categories, subcategories }: { pr
     isActive: product?.isActive ?? true,
     featured: product?.featured ?? false,
     specifications: product?.specifications || [],
-    images: product?.images || []
+    images: product?.images || [],
+    stockStatus: product?.stockStatus || 'IN_STOCK',
+    stockQuantity: product?.stockQuantity !== undefined ? product?.stockQuantity : ''
   });
 
   const availableSubcategories = subcategories.filter(sub => sub.categoryId === formData.categoryId);
@@ -117,6 +119,32 @@ export default function ProductForm({ product, categories, subcategories }: { pr
           <input type="number" name="price" value={formData.price} onChange={handleChange} className={styles.input} required min="0" />
         </div>
 
+        <div style={{ marginTop: '1.5rem', marginBottom: '1.5rem', padding: '1rem', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+          <h3 style={{ fontSize: '1rem', marginBottom: '1rem' }}>STOCK & AVAILABILITY</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div className={styles.inputGroup}>
+              <label>Stock Status</label>
+              <select name="stockStatus" value={formData.stockStatus} onChange={handleChange} className={styles.input}>
+                <option value="IN_STOCK">In Stock</option>
+                <option value="LOW_STOCK">Low Stock</option>
+                <option value="OUT_OF_STOCK">Out of Stock</option>
+              </select>
+            </div>
+            <div className={styles.inputGroup}>
+              <label>Stock Quantity (Optional)</label>
+              <input 
+                type="number" 
+                name="stockQuantity" 
+                value={formData.stockQuantity} 
+                onChange={handleChange} 
+                className={styles.input} 
+                min="0"
+                placeholder={formData.stockStatus === 'OUT_OF_STOCK' ? '0' : ''}
+              />
+            </div>
+          </div>
+        </div>
+
         <div className={styles.inputGroup}>
           <label>Short Description</label>
           <textarea name="shortDescription" value={formData.shortDescription} onChange={handleChange} className={styles.input} rows={2} />
@@ -141,21 +169,12 @@ export default function ProductForm({ product, categories, subcategories }: { pr
 
         <div className={styles.inputGroup}>
           <label>Images</label>
-          {formData.images.map((img: string, idx: number) => (
-            <div key={idx} style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              <input value={img} onChange={(e) => {
-                const newImages = [...formData.images];
-                newImages[idx] = e.target.value;
-                setFormData(prev => ({ ...prev, images: newImages }));
-              }} placeholder="Image URL" className={styles.input} style={{ flex: 1 }} />
-              <button type="button" onClick={() => {
-                const newImages = [...formData.images];
-                newImages.splice(idx, 1);
-                setFormData(prev => ({ ...prev, images: newImages }));
-              }} style={{ padding: '0 0.5rem', background: '#ff4444', color: 'white', border: 'none', borderRadius: '4px' }}>X</button>
-            </div>
-          ))}
-          <button type="button" onClick={() => setFormData(prev => ({ ...prev, images: [...prev.images, ''] }))} style={{ padding: '0.5rem', background: 'var(--border-color)', color: 'var(--text-main)', border: 'none', borderRadius: '4px', cursor: 'pointer', width: 'fit-content' }}>+ Add Image URL</button>
+          <ImageUploader 
+            images={formData.images} 
+            onChange={(newImages) => setFormData(prev => ({ ...prev, images: newImages }))} 
+            folder="yourstore/products"
+            multiple={true}
+          />
         </div>
 
         <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>

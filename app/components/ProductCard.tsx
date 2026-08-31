@@ -12,6 +12,8 @@ interface ProductCardProps {
   mainCategory?: string;
   subCategory?: string;
   slug?: string;
+  stockStatus?: 'IN_STOCK' | 'LOW_STOCK' | 'OUT_OF_STOCK';
+  stockQuantity?: number;
   onEnquire?: () => void;
 }
 
@@ -24,6 +26,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   mainCategory,
   subCategory,
   slug,
+  stockStatus = 'IN_STOCK',
+  stockQuantity,
   onEnquire
 }) => {
   const message = `Hi YOURSTORE, I'm interested in ${title}. Please share availability and pricing.`;
@@ -44,6 +48,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {price && <span className={styles.price}>{price}</span>}
         </div>
         <h3 className={styles.title}>{title}</h3>
+        
+        <div style={{ margin: '0.5rem 0', fontSize: '0.8rem', fontWeight: 600 }}>
+          {stockStatus === 'IN_STOCK' && <span style={{ color: '#4CAF50' }}>🟢 IN STOCK</span>}
+          {stockStatus === 'LOW_STOCK' && (
+            <span style={{ color: '#FF9800' }}>
+              🟠 LOW STOCK {stockQuantity !== undefined && stockQuantity !== null && `(Only ${stockQuantity} left)`}
+            </span>
+          )}
+          {stockStatus === 'OUT_OF_STOCK' && <span style={{ color: '#F44336' }}>🔴 OUT OF STOCK</span>}
+        </div>
         
         {specs.length > 0 && (
           <div className={styles.specs}>

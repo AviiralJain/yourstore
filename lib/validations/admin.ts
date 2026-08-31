@@ -41,4 +41,6 @@ export const ProductSchema = z.object({
   images: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
   isActive: z.boolean().optional(),
+  stockStatus: z.enum(['IN_STOCK', 'LOW_STOCK', 'OUT_OF_STOCK']).optional(),
+  stockQuantity: z.number().int().min(0).optional().or(z.string().transform(val => val === '' ? undefined : Number(val)).pipe(z.number().int().min(0).optional())),
 });

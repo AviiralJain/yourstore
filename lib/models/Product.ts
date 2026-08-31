@@ -13,7 +13,8 @@ export interface IProduct extends Document {
   images: string[];
   featured: boolean;
   isActive: boolean;
-  stockStatus: string;
+  stockStatus: 'IN_STOCK' | 'LOW_STOCK' | 'OUT_OF_STOCK';
+  stockQuantity?: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -37,7 +38,8 @@ const ProductSchema: Schema = new Schema(
     images: [{ type: String }],
     featured: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
-    stockStatus: { type: String, default: 'IN_STOCK' }, // e.g. IN_STOCK, OUT_OF_STOCK
+    stockStatus: { type: String, enum: ['IN_STOCK', 'LOW_STOCK', 'OUT_OF_STOCK'], default: 'IN_STOCK' },
+    stockQuantity: { type: Number, min: 0 },
   },
   { timestamps: true }
 );

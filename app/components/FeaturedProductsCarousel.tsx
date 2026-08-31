@@ -63,6 +63,8 @@ export const FeaturedProductsCarousel: React.FC = () => {
           price={`₹${product.price}`}
           image={product.images && product.images.length > 0 ? product.images[0] : ''}
           specs={product.specifications || []}
+          stockStatus={product.stockStatus}
+          stockQuantity={product.stockQuantity}
         />
       ))}
     </ProductCarousel>

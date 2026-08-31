@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import styles from './CategoryExplorer.module.css';
 
 export const CategoryExplorer: React.FC = () => {
@@ -99,7 +100,7 @@ export const CategoryExplorer: React.FC = () => {
                     <ul className={styles.subList}>
                       {category.subcategories.map((sub: any) => (
                         <li key={sub.id} className={styles.subItem}>
-                          <a href={`/#categories`} className={styles.subLink}>[ {sub.name} ]</a>
+                          <Link href={`/categories/${category.slug}/${sub.slug}`} className={styles.subLink}>[ {sub.name} ]</Link>
                         </li>
                       ))}
                     </ul>
@@ -107,9 +108,9 @@ export const CategoryExplorer: React.FC = () => {
                     <div className={styles.emptyState}>No subcategories yet.</div>
                   )}
                   
-                  <a href={`/#categories`} className={styles.viewAllCta}>
+                  <Link href={`/categories/${category.slug}`} className={styles.viewAllCta}>
                     VIEW ALL IN {category.name} &rarr;
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

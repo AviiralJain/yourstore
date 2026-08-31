@@ -22,6 +22,10 @@ export async function POST(request: NextRequest) {
     if (data.subcategoryId === '') {
       delete data.subcategoryId;
     }
+    
+    if (data.stockQuantity === undefined) {
+      delete data.stockQuantity;
+    }
 
     const existing = await Product.findOne({ slug: data.slug });
     if (existing) {
