@@ -74,7 +74,7 @@ export const CategoryExplorer: React.FC = () => {
                   {category.image ? (
                     <img src={category.image} alt={category.name} className={styles.cardImage} />
                   ) : (
-                    <div className={styles.cardImage} style={{ background: 'var(--surface-color)' }}></div>
+                    <div className={styles.fallbackPattern}></div>
                   )}
                   <div className={styles.cardOverlay}></div>
                 </div>

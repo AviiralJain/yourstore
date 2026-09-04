@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { Container } from './components/Container';
@@ -33,7 +34,9 @@ export default function Home() {
                 </p>
                 
                 <div className={styles.heroActions}>
-                  <Button variant="primary" size="lg">EXPLORE PRODUCTS &rarr;</Button>
+                  <Link href="/products" style={{ textDecoration: 'none' }}>
+                    <Button variant="primary" size="lg" style={{ pointerEvents: 'none' }}>EXPLORE PRODUCTS &rarr;</Button>
+                  </Link>
                   <a href="/build-your-project" style={{ textDecoration: 'none' }}>
                     <Button variant="outline" size="lg" style={{ pointerEvents: 'none' }}>BUILD YOUR PROJECT</Button>
                   </a>
@@ -147,7 +150,9 @@ export default function Home() {
                 Explore our components or tell us about your next UAV project.
               </p>
               <div style={{ display: 'flex', justifyContent: 'center', gap: 'var(--spacing-md)' }}>
-                <Button variant="primary">EXPLORE PRODUCTS</Button>
+                <Link href="/products" style={{ textDecoration: 'none' }}>
+                  <Button variant="primary" style={{ pointerEvents: 'none' }}>EXPLORE PRODUCTS</Button>
+                </Link>
                 <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi YOURSTORE, I'd like to discuss a project.")}`} target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" style={{ pointerEvents: 'none' }}>CONTACT US</Button>
                 </a>

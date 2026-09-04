@@ -12,6 +12,7 @@
   align-items: center;
   justify-content: space-between;
   height: 72px;
+  max-width: 1536px !important;
 }
 
 .logo {
@@ -32,8 +33,10 @@
   display: none;
   position: relative;
   max-width: 400px;
+  min-width: 150px;
   width: 100%;
-  margin: 0 var(--spacing-lg);
+  margin: 0 var(--spacing-xl);
+  flex: 1;
 }
 
 .searchInput {
@@ -103,8 +106,16 @@
 .mobileAction {
   margin-top: var(--spacing-xl);
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+}
+
+.cartLinkMobile {
+  display: block;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 600;
+  padding: 0.5rem 0;
+  margin-bottom: var(--spacing-md);
 }
 
 .actions {
@@ -113,10 +124,51 @@
   gap: var(--spacing-md);
   position: relative;
   z-index: 60;
+  flex-shrink: 0;
 }
 
 .desktopAction {
   display: none;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.cartLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--surface-color);
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.cartLink:hover {
+  background-color: var(--surface-hover);
+}
+
+.cartIcon {
+  font-size: 1.25rem;
+}
+
+.cartBadge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: var(--accent-primary);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hamburger {
@@ -152,7 +204,7 @@
   transform: rotate(-45deg);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .links {
     position: static;
     flex-direction: row;
@@ -161,13 +213,16 @@
     background-color: transparent;
     border-left: none;
     padding: 0;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-xl);
+    align-items: center;
+    flex-shrink: 0;
   }
 
   .link {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--text-muted);
+    white-space: nowrap;
   }
 
   .mobileAction {
@@ -177,7 +232,8 @@
   .desktopAction {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--spacing-lg);
+    flex-shrink: 0;
   }
 
   .hamburger {

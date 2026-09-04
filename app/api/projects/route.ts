@@ -12,9 +12,10 @@ export async function GET() {
       id: p._id.toString(),
     }));
 
+    console.log("Mongoose connected successfully!");
     return NextResponse.json(formattedProjects, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching projects:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error', message: error.message }, { status: 500 });
   }
 }

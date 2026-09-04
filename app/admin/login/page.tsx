@@ -60,7 +60,10 @@ export default function AdminLogin() {
           </div>
           
           <div className={styles.inputGroup}>
-            <label htmlFor="password">Password</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <label htmlFor="password">Password</label>
+              <a href="/admin/forgot-password" style={{ fontSize: '0.875rem', color: 'var(--accent-primary)', textDecoration: 'none' }}>Forgot Password?</a>
+            </div>
             <input
               id="password"
               type="password"

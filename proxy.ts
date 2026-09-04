@@ -5,10 +5,23 @@ import { verifyToken } from './lib/auth/jwt';
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Protect /admin (except /admin/login) and /api/admin routes
+  const publicAdminRoutes = [
+    '/admin/login',
+    '/admin/forgot-password',
+    '/admin/reset-password'
+  ];
+  
+  const publicApiRoutes = [
+    '/api/admin/login',
+    '/api/admin/setup',
+    '/api/admin/auth/forgot-password',
+    '/api/admin/auth/reset-password'
+  ];
+
+  // Protect /admin and /api/admin routes
   if (
-    pathname.startsWith('/admin') && pathname !== '/admin/login' ||
-    pathname.startsWith('/api/admin') && pathname !== '/api/admin/login'
+    (pathname.startsWith('/admin') && !publicAdminRoutes.includes(pathname)) ||
+    (pathname.startsWith('/api/admin') && !publicApiRoutes.includes(pathname))
   ) {
     const token = request.cookies.get('admin_token')?.value;
     
@@ -32,8 +45,8 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // If already logged in, don't show login page again
-  if (pathname === '/admin/login') {
+  // If already logged in, don't show login/forgot/reset pages again
+  if (publicAdminRoutes.includes(pathname)) {
     const token = request.cookies.get('admin_token')?.value;
     if (token) {
       const payload = await verifyToken(token);

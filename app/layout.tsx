@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { getBaseUrl } from "@/lib/utils/getBaseUrl";
 import "./globals.css";
+
+import { CartProvider } from "./context/CartContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -9,6 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getBaseUrl()),
   title: "YOURSTORE | Drone Parts & UAV Solutions",
   description: "Premium drone components and custom aerospace engineering solutions.",
 };
@@ -24,19 +28,21 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              (function() {
-                try {
-                  var savedTheme = localStorage.getItem('theme');
-                  if (savedTheme === 'light') {
-                    document.documentElement.setAttribute('data-theme', 'light');
-                  }
-                } catch (e) {}
-              })();
+              try {
+                var savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'light') {
+                  document.documentElement.setAttribute('data-theme', 'light');
+                }
+              } catch (e) {}
             `,
           }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <CartProvider>
+          {children}
+        </CartProvider>
+      </body>
     </html>
   );
 }

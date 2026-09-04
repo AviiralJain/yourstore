@@ -1,11 +1,16 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db/mongodb';
 import Product from '@/lib/models/Product';
+import Category from '@/lib/models/Category';
+import Subcategory from '@/lib/models/Subcategory';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
   try {
     await connectToDatabase();
+    Product.init();
+    Category.init();
+    Subcategory.init();
     
     // Parse query params for simple filtering
     const searchParams = request.nextUrl.searchParams;

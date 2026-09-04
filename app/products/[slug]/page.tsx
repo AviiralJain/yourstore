@@ -14,6 +14,9 @@ import Subcategory from '@/lib/models/Subcategory';
 import styles from './ProductDetail.module.css';
 import { Metadata } from 'next';
 import { ProductGallery } from './ProductGallery';
+import { ProductActions } from '@/app/components/ProductActions';
+import { ReviewSection } from '@/app/components/ReviewSection';
+import Review from '@/lib/models/Review';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,8 +54,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const subcategoryName = product.subcategoryId ? (product.subcategoryId as any).name : null;
   const subcategorySlug = product.subcategoryId ? (product.subcategoryId as any).slug : '';
   
-  const whatsappMessage = `Hi YOURSTORE, I'm interested in ${product.name}. Please share availability and pricing.`;
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
+  const reviewsList = await Review.find({ 
+    productId: product._id,
+    status: 'APPROVED'
+  }).sort({ createdAt: -1 }).lean();
+  
+  const totalReviews = reviewsList.length;
+  const averageRating = totalReviews > 0 
+    ? reviewsList.reduce((acc, rev: any) => acc + rev.rating, 0) / totalReviews
+    : 0;
 
   return (
     <>
@@ -100,16 +110,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 <p className={styles.shortDescription} style={{ marginBottom: '1rem' }}>{product.shortDescription}</p>
               )}
               
-              <div className={styles.actions} style={{ marginBottom: '1.5rem', paddingBottom: '1.5rem' }}>
-                {product.stockStatus === 'OUT_OF_STOCK' ? (
-                  <StockNotificationForm productId={product._id.toString()} productName={product.name} />
-                ) : (
-                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', textDecoration: 'none' }}>
-                    <Button variant="primary" size="lg" fullWidth style={{ pointerEvents: 'none' }}>
-                      ENQUIRE ON WHATSAPP
-                    </Button>
-                  </a>
-                )}
+              <div className={styles.actions}>
+                <ProductActions product={{
+                  _id: product._id.toString(),
+                  name: product.name,
+                  slug: product.slug,
+                  price: product.price,
+                  image: product.images?.[0] || '',
+                  stockStatus: product.stockStatus || 'IN_STOCK'
+                }} />
               </div>
               
               {product.description && (
@@ -136,6 +145,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                   </table>
                 </div>
               )}
+              
+              <ReviewSection 
+                productId={product._id.toString()} 
+                reviews={JSON.parse(JSON.stringify(reviewsList))}
+                averageRating={averageRating}
+                totalReviews={totalReviews}
+              />
             </div>
           </div>
         </Container>

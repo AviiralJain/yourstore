@@ -12,7 +12,9 @@ import {
   LogOut,
   Menu,
   X,
-  Bell
+  Bell,
+  Star,
+  Shield
 } from 'lucide-react';
 import styles from './admin.module.css';
 
@@ -21,8 +23,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // Don't show sidebar on login page
-  if (pathname === '/admin/login') {
+  // Don't show sidebar on login and password pages
+  if (pathname === '/admin/login' || pathname === '/admin/forgot-password' || pathname === '/admin/reset-password') {
     return <>{children}</>;
   }
 
@@ -43,6 +45,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Projects', path: '/admin/projects', icon: <Briefcase size={20} /> },
     { name: 'Enquiries', path: '/admin/enquiries', icon: <MessageSquare size={20} /> },
     { name: 'Stock Alerts', path: '/admin/stock-notifications', icon: <Bell size={20} /> },
+    { name: 'Reviews', path: '/admin/reviews', icon: <Star size={20} /> },
+    { name: 'Security', path: '/admin/security', icon: <Shield size={20} /> },
   ];
 
   return (

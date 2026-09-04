@@ -1,9 +1,13 @@
-import React from 'react';
+"use client";
+
+import React, { useState, useEffect } from 'react';
 import styles from './ProductCard.module.css';
 import { Button } from './Button';
 import { WHATSAPP_NUMBER } from '../lib/contact';
+import { useCart } from '../context/CartContext';
 
 interface ProductCardProps {
+  id?: string;
   title: string;
   category: string;
   price: string;
@@ -18,6 +22,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
+  id,
   title,
   category,
   price,
@@ -30,8 +35,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   stockQuantity,
   onEnquire
 }) => {
+  const { addToCart, isInCart } = useCart();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const message = `Hi YOURSTORE, I'm interested in ${title}. Please share availability and pricing.`;
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+  // Using a fallback ID if id is not passed, but in new data it should be
+  const productId = id || slug || title; 
+  const numPrice = parseInt(price.replace(/[^0-9]/g, ''), 10) || 0;
+  
+  const inCart = mounted && isInCart(productId);
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: productId,
+      slug: slug || '',
+      name: title,
+      price: numPrice,
+      image: image || '',
+      stockStatus: stockStatus
+    });
+  };
 
   return (
     <div className={styles.card}>
@@ -71,7 +100,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         )}
         
         <div className={styles.actions}>
-          <div className={styles.actionRow}>
+          <div className={styles.actionRow} style={{ marginBottom: '8px' }}>
             {slug ? (
               <a href={`/products/${slug}`} style={{ flex: 1, display: 'block', textDecoration: 'none' }}>
                 <Button variant="outline" fullWidth style={{ pointerEvents: 'none' }}>
@@ -83,12 +112,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 View Details
               </Button>
             )}
+            
             <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" style={{ flex: 1, display: 'block' }}>
-              <Button variant="primary" fullWidth style={{ pointerEvents: 'none' }}>
-                Enquire on WhatsApp
+              <Button variant="outline" fullWidth style={{ pointerEvents: 'none' }}>
+                WhatsApp
               </Button>
             </a>
           </div>
+          
+          <Button 
+            variant="primary" 
+            fullWidth 
+            onClick={handleAddToCart}
+            disabled={inCart}
+          >
+            {inCart ? 'IN ENQUIRY CART' : 'ADD TO ENQUIRY CART'}
+          </Button>
         </div>
       </div>
     </div>

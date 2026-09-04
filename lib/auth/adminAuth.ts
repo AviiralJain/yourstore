@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { verifyToken } from './jwt';
+import connectToDatabase from '@/lib/db/mongodb';
+import { Admin } from '@/lib/models/Admin';
 
 /**
  * Checks if the request has a valid admin JWT cookie.
@@ -12,7 +14,7 @@ export async function requireAdmin(request: Request) {
 
   if (cookieHeader) {
     const cookies = Object.fromEntries(
-      cookieHeader.split('; ').map(c => c.split('='))
+      cookieHeader.split(';').map(c => c.trim().split('='))
     );
     token = cookies['admin_token'];
   }
@@ -31,8 +33,30 @@ export async function requireAdmin(request: Request) {
 
   const payload = await verifyToken(token);
 
-  if (!payload) {
+  if (!payload || !payload.email) {
     return NextResponse.json({ error: 'Unauthorized: Invalid or expired token' }, { status: 401 });
+  }
+
+  try {
+    await connectToDatabase();
+    const admin = await Admin.findOne({ email: (payload.email as string).toLowerCase() });
+    
+    if (!admin || !admin.isActive) {
+      return NextResponse.json({ error: 'Unauthorized: Account deactivated or removed' }, { status: 401 });
+    }
+    
+    if (admin.passwordChangedAt && payload.iat) {
+      // payload.iat is in seconds, passwordChangedAt is a Date
+      const iatMs = (payload.iat as number) * 1000;
+      console.log('DEBUG: iatMs =', iatMs, 'passwordChangedAt =', admin.passwordChangedAt.getTime(), 'diff =', admin.passwordChangedAt.getTime() - iatMs);
+      // Allow a small buffer (1 second) for clock skew/JWT rounding
+      if (iatMs + 1000 < admin.passwordChangedAt.getTime()) {
+        return NextResponse.json({ error: 'Unauthorized: Session expired due to password change' }, { status: 401 });
+      }
+    }
+  } catch (error) {
+    // If DB fails, we could reject or allow. Given it's admin, safer to reject.
+    return NextResponse.json({ error: 'Internal Server Error during authentication' }, { status: 500 });
   }
 
   return null; // Return null if authorized

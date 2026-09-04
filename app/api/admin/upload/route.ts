@@ -1,20 +1,14 @@
 import { NextResponse, NextRequest } from 'next/server';
 import cloudinary from '@/lib/cloudinary/config';
-import { verifyToken } from '@/lib/auth/jwt';
+import { requireAdmin } from '@/lib/auth/adminAuth';
 
 export const runtime = 'nodejs'; // Use node environment to handle buffer easily
 
 export async function POST(request: NextRequest) {
   try {
     // 1. Authenticate Request
-    const token = request.cookies.get('admin_token')?.value;
-    if (!token) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    const payload = await verifyToken(token);
-    if (!payload || payload.role !== 'admin') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const authError = await requireAdmin(request);
+    if (authError) return authError;
 
     // 2. Extract Data
     const formData = await request.formData();
