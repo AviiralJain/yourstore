@@ -52,9 +52,11 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     
     // Check for orphans
     const prodcount = await Product.countDocuments({ subcategoryId: id });
+    const Project = (await import('@/lib/models/Project')).default;
+    const projcount = await Project.countDocuments({ subcategoryId: id });
     
-    if (prodcount > 0) {
-      return NextResponse.json({ error: `Cannot delete subcategory. It has ${prodcount} products attached.` }, { status: 400 });
+    if (prodcount > 0 || projcount > 0) {
+      return NextResponse.json({ error: `Cannot delete subcategory. It has ${prodcount} products and ${projcount} projects attached.` }, { status: 400 });
     }
 
     const subcategory = await Subcategory.findByIdAndDelete(id);

@@ -68,13 +68,13 @@ export async function POST(request: Request) {
     const fromEmail = process.env.ADMIN_EMAIL_FROM || 'admin@yourstore.com';
 
     await resend.emails.send({
-      from: `YOURSTORE <${fromEmail}>`,
+      from: `VECTOR-X SOLUTIONS <${fromEmail}>`,
       to: [admin.email],
-      subject: 'YOURSTORE - Password Reset Request',
+      subject: 'VECTOR-X SOLUTIONS - Password Reset Request',
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h2>Password Reset Request</h2>
-          <p>You requested a password reset for your YOURSTORE admin account.</p>
+          <p>You requested a password reset for your VECTOR-X SOLUTIONS admin account.</p>
           <p>Click the button below to reset your password. This link expires in 30 minutes.</p>
           <div style="margin: 30px 0;">
             <a href="${resetUrl}" style="background-color: #000; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">RESET PASSWORD</a>

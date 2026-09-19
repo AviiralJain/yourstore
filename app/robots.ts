@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next';
+﻿import { MetadataRoute } from 'next';
 import { getBaseUrl } from '@/lib/utils/getBaseUrl';
 
 export default function robots(): MetadataRoute.Robots {
@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin/', '/api/admin/', '/api/', '/cart'],
+      disallow: ['/admin/', '/api/admin/', '/api/', '/cart', '/products/', '/categories/'],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   };

@@ -19,6 +19,25 @@ export async function POST(request: NextRequest) {
 
     await connectToDatabase();
     
+    // Validate category and subcategory
+    const Category = (await import('@/lib/models/Category')).default;
+    const Subcategory = (await import('@/lib/models/Subcategory')).default;
+    
+    const category = await Category.findById(data.categoryId);
+    if (!category) {
+      return NextResponse.json({ error: 'Invalid category' }, { status: 400 });
+    }
+    
+    if (data.subcategoryId) {
+      const subcategory = await Subcategory.findById(data.subcategoryId);
+      if (!subcategory) {
+        return NextResponse.json({ error: 'Invalid subcategory' }, { status: 400 });
+      }
+      if (subcategory.categoryId.toString() !== data.categoryId) {
+        return NextResponse.json({ error: 'Subcategory does not belong to the selected category' }, { status: 400 });
+      }
+    }
+    
     const existing = await Project.findOne({ slug: data.slug });
     if (existing) {
       return NextResponse.json({ error: 'Project slug already exists' }, { status: 409 });
@@ -41,7 +60,7 @@ export async function GET(request: NextRequest) {
 
     await connectToDatabase();
     
-    const projects = await Project.find().sort({ createdAt: -1 });
+    const projects = await Project.find().populate('categoryId').sort({ createdAt: -1 });
     return NextResponse.json(projects, { status: 200 });
   } catch (error) {
     console.error('Error fetching projects:', error);

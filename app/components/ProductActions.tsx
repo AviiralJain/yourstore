@@ -25,7 +25,7 @@ export const ProductActions: React.FC<ProductActionsProps> = ({ product }) => {
     setMounted(true);
   }, []);
 
-  const whatsappMessage = `Hi YOURSTORE, I'm interested in ${product.name}. Please share availability and pricing.`;
+  const whatsappMessage = `Hi VECTOR-X, I'm interested in ${product.name}. Please share availability and pricing.`;
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
   
   const inCart = mounted && isInCart(product._id);

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { getBaseUrl } from "@/lib/utils/getBaseUrl";
 import "./globals.css";
@@ -13,8 +13,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseUrl()),
-  title: "YOURSTORE | Drone Parts & UAV Solutions",
-  description: "Premium drone components and custom aerospace engineering solutions.",
+  title: "VECTOR-X SOLUTIONS | Engineering & Project Development",
+  description: "Engineering solutions across drones, robotics, embedded systems, IoT, AI, autonomous technologies, and practical training.",
 };
 
 export default function RootLayout({

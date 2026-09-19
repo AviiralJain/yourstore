@@ -1,7 +1,7 @@
 .navbar {
-  border-bottom: 1px solid var(--border-color);
-  background-color: rgba(8, 11, 16, 0.85);
-  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: #080c16;
+  backdrop-filter: blur(16px);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -11,29 +11,30 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 72px;
+  height: 80px;
   max-width: 1536px !important;
 }
 
+ 
+ 
+ 
 .logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.05em;
-  color: var(--text-main);
-  text-decoration: none;
+  display: flex;
+  align-items: center;
   z-index: 60;
   flex-shrink: 0;
+  transition: opacity 0.2s ease;
 }
 
-.logoHighlight {
-  color: var(--accent-primary);
+.logo:hover {
+  opacity: 0.9;
 }
 
 .searchContainer {
   display: none;
   position: relative;
-  max-width: 400px;
-  min-width: 150px;
+  max-width: 320px;
+  min-width: 200px;
   width: 100%;
   margin: 0 var(--spacing-xl);
   flex: 1;
@@ -41,34 +42,44 @@
 
 .searchInput {
   width: 100%;
-  padding: 8px 16px;
+  padding: 10px 16px;
   padding-right: 40px;
-  background-color: var(--surface-dark);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  color: #ffffff;
   font-family: inherit;
   font-size: 0.9rem;
-  transition: border-color var(--transition-speed) ease;
+  transition: all 0.2s ease;
 }
 
 .searchInput:focus {
   outline: none;
-  border-color: var(--accent-primary);
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .searchBtn {
   position: absolute;
-  right: 8px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.searchBtn:hover {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .links {
@@ -78,8 +89,8 @@
   transform: translateX(100%);
   width: 280px;
   height: 100vh;
-  background-color: var(--surface-dark);
-  border-left: 1px solid var(--border-color);
+  background-color: #080c16;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
   padding: 100px var(--spacing-xl) var(--spacing-xl);
@@ -94,14 +105,15 @@
 
 .link {
   font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--text-main);
-  transition: color var(--transition-speed) ease;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease;
   text-decoration: none;
+  position: relative;
 }
 
 .link:hover {
-  color: var(--accent-primary);
+  color: #ffffff;
 }
 
 .mobileAction {
@@ -113,8 +125,8 @@
 .cartLinkMobile {
   display: block;
   text-decoration: none;
-  color: var(--text-main);
-  font-weight: 600;
+  color: #ffffff;
+  font-weight: 500;
   padding: 0.5rem 0;
   margin-bottom: var(--spacing-md);
 }
@@ -139,28 +151,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background-color: var(--surface-color);
-  color: var(--text-color);
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
 .cartLink:hover {
-  background-color: var(--surface-hover);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
 }
 
 .cartIcon {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
 .cartBadge {
   position: absolute;
-  top: -2px;
-  right: -2px;
-  background-color: var(--accent-primary);
+  top: -4px;
+  right: -4px;
+  background-color: #4f6df5;
   color: #fff;
   font-size: 0.65rem;
   font-weight: 700;
@@ -188,7 +202,7 @@
 .hamburgerLine {
   width: 100%;
   height: 2px;
-  background-color: var(--text-main);
+  background-color: #ffffff;
   transition: all 0.3s ease;
   transform-origin: left;
 }
@@ -225,10 +239,26 @@
   }
 
   .link {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     font-weight: 500;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.7);
     white-space: nowrap;
+    padding: 8px 0;
+  }
+  
+  .link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #4f6df5;
+    transition: width 0.2s ease;
+  }
+  
+  .link:hover::after {
+    width: 100%;
   }
 
   .mobileAction {
@@ -238,7 +268,7 @@
   .desktopAction {
     display: flex;
     align-items: center;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
     flex-shrink: 0;
   }
 
@@ -251,10 +281,19 @@
   }
 }
 
+@media (min-width: 1280px) {
+  .searchContainer {
+    max-width: 360px;
+  }
+  .desktopAction {
+    gap: var(--spacing-lg);
+  }
+}
+
 .backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   z-index: 30;
   opacity: 0;
@@ -266,3 +305,10 @@
   opacity: 1;
   visibility: visible;
 }
+
+.active { color: #ffffff; }
+.active::after { transform: scaleX(1) !important; transform-origin: left !important; }
+
+
+.active::after { width: 100% !important; }
+

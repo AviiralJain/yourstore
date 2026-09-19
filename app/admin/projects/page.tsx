@@ -1,6 +1,8 @@
 import React from 'react';
 import connectToDatabase from '@/lib/db/mongodb';
 import Project from '@/lib/models/Project';
+import Category from '@/lib/models/Category';
+import Subcategory from '@/lib/models/Subcategory';
 import styles from '../admin.module.css';
 import Link from 'next/link';
 import DeleteButton from '../components/DeleteButton';
@@ -8,7 +10,7 @@ import DeleteButton from '../components/DeleteButton';
 export default async function AdminProjectsPage() {
   await connectToDatabase();
   
-  const projects = await Project.find().sort({ createdAt: -1 }).lean();
+  const projects = await Project.find().populate('categoryId').populate('subcategoryId').sort({ createdAt: -1 }).lean();
 
   return (
     <div>
@@ -29,8 +31,11 @@ export default async function AdminProjectsPage() {
                 <tr>
                   <th>Title</th>
                   <th>Category</th>
-                  <th>Client</th>
+                  <th>Subcategory</th>
+                  <th>Project Type</th>
+                  <th>Featured</th>
                   <th>Status</th>
+                  <th>Created</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -38,13 +43,16 @@ export default async function AdminProjectsPage() {
                 {projects.map((project: any) => (
                   <tr key={project._id.toString()}>
                     <td style={{ fontWeight: 500 }}>{project.title}</td>
-                    <td>{project.category}</td>
-                    <td>{project.client || 'N/A'}</td>
+                    <td>{project.categoryId?.name || 'N/A'}</td>
+                    <td>{project.subcategoryId?.name || 'N/A'}</td>
+                    <td>{project.projectType || 'N/A'}</td>
+                    <td>{project.featured ? 'Yes' : 'No'}</td>
                     <td>
-                      <span className={`${styles.statusBadge} ${project.isActive ? styles.statusProgress : styles.statusClosed}`}>
-                        {project.isActive ? 'Active' : 'Inactive'}
+                      <span className={`${styles.statusBadge} ${project.active ? styles.statusProgress : styles.statusClosed}`}>
+                        {project.active ? 'Active' : 'Inactive'}
                       </span>
                     </td>
+                    <td>{new Date(project.createdAt).toLocaleDateString()}</td>
                     <td>
                       <Link href={`/admin/projects/${project._id}`} style={{ color: 'var(--accent-primary)', marginRight: '1rem', fontWeight: 600 }}>
                         Edit

@@ -5,49 +5,42 @@ import { useRouter } from 'next/navigation';
 import styles from '../login/login.module.css';
 import { ImageUploader } from './ImageUploader';
 
-export default function ProjectForm({ project, categories }: { project?: any, categories: any[] }) {
+export default function ProjectForm({ project, categories, subcategories = [] }: { project?: any, categories: any[], subcategories?: any[] }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
-  const defaultCategory = categories.length > 0 ? categories[0].name : '';
+  const defaultCategory = categories.length > 0 ? categories[0]._id : '';
   
   const [formData, setFormData] = useState({
     title: project?.title || '',
     slug: project?.slug || '',
-    category: project?.category || defaultCategory,
-    client: project?.client || '',
+    categoryId: project?.categoryId?._id || project?.categoryId || defaultCategory,
+    subcategoryId: project?.subcategoryId?._id || project?.subcategoryId || '',
+    projectType: project?.projectType || '',
     shortDescription: project?.shortDescription || '',
-    description: project?.description || '',
+    fullDescription: project?.fullDescription || '',
     images: project?.images || [],
-    isActive: project?.isActive ?? true,
-    isFeatured: project?.isFeatured ?? false,
+    technologies: project?.technologies?.join(', ') || '',
+    hardware: project?.hardware?.join(', ') || '',
+    software: project?.software?.join(', ') || '',
+    features: project?.features?.join('\n') || '',
+    active: project?.active ?? true,
+    featured: project?.featured ?? false,
   });
+
+  const availableSubcategories = subcategories.filter(s => s.categoryId?.toString() === formData.categoryId);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
       setFormData(prev => ({ ...prev, [name]: checked }));
+    } else if (name === 'categoryId') {
+      setFormData(prev => ({ ...prev, categoryId: value, subcategoryId: '' }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
-  };
-
-  const addImage = () => {
-    setFormData(prev => ({ ...prev, images: [...prev.images, ''] }));
-  };
-
-  const updateImage = (index: number, value: string) => {
-    const newImages = [...formData.images];
-    newImages[index] = value;
-    setFormData(prev => ({ ...prev, images: newImages }));
-  };
-
-  const removeImage = (index: number) => {
-    const newImages = [...formData.images];
-    newImages.splice(index, 1);
-    setFormData(prev => ({ ...prev, images: newImages }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,10 +52,20 @@ export default function ProjectForm({ project, categories }: { project?: any, ca
       const url = project ? `/api/admin/projects/${project._id}` : '/api/admin/projects';
       const method = project ? 'PATCH' : 'POST';
 
+      // Parse comma-separated and newline-separated fields
+      const payload = {
+        ...formData,
+        subcategoryId: formData.subcategoryId || null,
+        technologies: formData.technologies.split(',').map((s: string) => s.trim()).filter(Boolean),
+        hardware: formData.hardware.split(',').map((s: string) => s.trim()).filter(Boolean),
+        software: formData.software.split(',').map((s: string) => s.trim()).filter(Boolean),
+        features: formData.features.split('\n').map((s: string) => s.trim()).filter(Boolean),
+      };
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
 
       if (res.ok) {
@@ -95,20 +98,26 @@ export default function ProjectForm({ project, categories }: { project?: any, ca
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
           <div className={styles.inputGroup}>
             <label>Main Category</label>
-            <select name="category" value={formData.category} onChange={handleChange} className={styles.input} required>
-              {categories.map(c => <option key={c._id} value={c.name}>{c.name}</option>)}
-              {/* Fallback for legacy categories not in DB */}
-              {!categories.find(c => c.name === formData.category) && formData.category && (
-                <option value={formData.category}>{formData.category}</option>
-              )}
+            <select name="categoryId" value={formData.categoryId} onChange={handleChange} className={styles.input} required>
+              <option value="">Select a Category</option>
+              {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
             </select>
           </div>
+          
           <div className={styles.inputGroup}>
-            <label>Client (Optional)</label>
-            <input name="client" value={formData.client} onChange={handleChange} className={styles.input} />
+            <label>Subcategory</label>
+            <select name="subcategoryId" value={formData.subcategoryId} onChange={handleChange} className={styles.input} disabled={availableSubcategories.length === 0}>
+              <option value="">{availableSubcategories.length === 0 ? 'No subcategories available' : 'Select a Subcategory'}</option>
+              {availableSubcategories.map(s => <option key={s._id} value={s._id}>{s.name}</option>)}
+            </select>
+          </div>
+          
+          <div className={styles.inputGroup}>
+            <label>Project Type</label>
+            <input name="projectType" value={formData.projectType} onChange={handleChange} className={styles.input} placeholder="e.g. Autonomous UAV" />
           </div>
         </div>
 
@@ -118,8 +127,30 @@ export default function ProjectForm({ project, categories }: { project?: any, ca
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Description</label>
-          <textarea name="description" value={formData.description} onChange={handleChange} className={styles.input} rows={4} />
+          <label>Full Description</label>
+          <textarea name="fullDescription" value={formData.fullDescription} onChange={handleChange} className={styles.input} rows={4} />
+        </div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className={styles.inputGroup}>
+            <label>Technologies (comma separated)</label>
+            <input name="technologies" value={formData.technologies} onChange={handleChange} className={styles.input} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Hardware (comma separated)</label>
+            <input name="hardware" value={formData.hardware} onChange={handleChange} className={styles.input} />
+          </div>
+        </div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className={styles.inputGroup}>
+            <label>Software (comma separated)</label>
+            <input name="software" value={formData.software} onChange={handleChange} className={styles.input} />
+          </div>
+          <div className={styles.inputGroup}>
+            <label>Features (one per line)</label>
+            <textarea name="features" value={formData.features} onChange={handleChange} className={styles.input} rows={3} />
+          </div>
         </div>
 
         <div className={styles.inputGroup}>
@@ -134,10 +165,10 @@ export default function ProjectForm({ project, categories }: { project?: any, ca
 
         <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>
           <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <input type="checkbox" name="isActive" checked={formData.isActive} onChange={handleChange} /> Active
+            <input type="checkbox" name="active" checked={formData.active} onChange={handleChange} /> Active
           </label>
           <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <input type="checkbox" name="isFeatured" checked={formData.isFeatured} onChange={handleChange} /> Featured
+            <input type="checkbox" name="featured" checked={formData.featured} onChange={handleChange} /> Featured
           </label>
         </div>
 

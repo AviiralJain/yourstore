@@ -6,14 +6,18 @@
   height: 38px;
   border-radius: 50%;
   background-color: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
-  transition: all var(--transition-speed) ease;
+  transition: all 0.2s ease;
 }
 
 .toggleBtn:hover {
-  background-color: var(--surface-hover);
-  color: var(--accent-primary);
-  border-color: var(--border-color);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.toggleBtn svg {
+  width: 18px;
+  height: 18px;
 }

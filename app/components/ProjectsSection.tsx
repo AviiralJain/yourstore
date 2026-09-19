@@ -10,7 +10,7 @@ export const ProjectsSection: React.FC = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch('/api/projects')
+    fetch('/api/projects/featured')
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch projects');
         return res.json();
@@ -44,8 +44,8 @@ export const ProjectsSection: React.FC = () => {
 
   if (projects.length === 0) {
     return (
-      <div style={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-color)', borderRadius: '8px' }}>
-        <p style={{ color: 'var(--text-muted)' }}>No projects available yet.</p>
+      <div style={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-color)', borderRadius: '8px', border: '1px dashed var(--border-color)' }}>
+        <p style={{ color: 'var(--text-muted)' }}>No featured projects available yet.</p>
       </div>
     );
   }
@@ -56,10 +56,11 @@ export const ProjectsSection: React.FC = () => {
         <ProjectCard 
           key={project.id}
           title={project.title}
-          client={project.client || ''}
+          projectType={project.projectType || ''}
           image={project.images && project.images.length > 0 ? project.images[0] : ''}
-          description={project.shortDescription || project.description}
+          description={project.shortDescription || project.fullDescription}
           slug={project.slug}
+          category={project.categoryId?.name}
         />
       ))}
     </div>

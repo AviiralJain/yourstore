@@ -42,7 +42,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     setMounted(true);
   }, []);
 
-  const message = `Hi YOURSTORE, I'm interested in ${title}. Please share availability and pricing.`;
+  const message = `Hi VECTOR-X, I'm interested in ${title}. Please share availability and pricing.`;
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
   // Using a fallback ID if id is not passed, but in new data it should be

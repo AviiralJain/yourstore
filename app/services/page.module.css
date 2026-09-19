@@ -1,0 +1,144 @@
+.main {
+  padding-top: var(--spacing-3xl);
+  padding-bottom: var(--spacing-3xl);
+}
+
+.hero { padding-top: var(--spacing-3xl); padding-bottom: var(--spacing-2xl); }
+
+.contentWrapper { max-width: 900px; margin: 0 auto; }
+
+.eyebrow {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-primary);
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text-main);
+  margin-bottom: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 3.5rem;
+  }
+}
+
+.description {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.servicesSection {
+  padding-bottom: var(--spacing-3xl);
+}
+
+.servicesList {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border-color);
+}
+
+.serviceRow {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg) 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: all var(--transition-speed) ease;
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .serviceRow {
+    flex-direction: row;
+    align-items: center;
+    padding: var(--spacing-xl);
+    border-bottom: 1px solid var(--border-color);
+    margin: 0 -var(--spacing-xl);
+    border-radius: var(--radius-md);
+    border-bottom-color: transparent;
+  }
+
+  .serviceRow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: var(--spacing-xl);
+    right: var(--spacing-xl);
+    height: 1px;
+    background-color: var(--border-color);
+  }
+
+  .serviceRow:hover {
+    background: var(--surface-hover);
+  }
+  
+  .serviceRow:hover::after {
+    display: none;
+  }
+}
+
+.serviceNumber {
+  font-family: monospace;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-xs);
+  transition: color var(--transition-speed) ease;
+}
+
+@media (min-width: 768px) {
+  .serviceNumber {
+    width: 80px;
+    margin-bottom: 0;
+  }
+}
+
+.serviceName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  transition: color var(--transition-speed) ease;
+  flex-grow: 1;
+}
+
+@media (min-width: 768px) {
+  .serviceName {
+    font-size: 2rem;
+  }
+}
+
+.serviceArrow {
+  display: none;
+  color: var(--accent-primary);
+  font-size: 1.5rem;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all var(--transition-speed) ease;
+}
+
+@media (min-width: 768px) {
+  .serviceArrow {
+    display: block;
+  }
+}
+
+.serviceRow:hover .serviceNumber,
+.serviceRow:hover .serviceName {
+  color: var(--accent-primary);
+}
+
+.serviceRow:hover .serviceArrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+

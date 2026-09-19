@@ -40,7 +40,7 @@ export default function ForgotPassword() {
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginCard}>
-        <div className={styles.logo}>YOURSTORE</div>
+        <div className={styles.logo}>VECTOR-X SOLUTIONS</div>
         <h1 className={styles.title}>Reset Password</h1>
         
         {error && <div className={styles.error}>{error}</div>}
@@ -56,7 +56,7 @@ export default function ForgotPassword() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={styles.input}
-              placeholder="admin@yourstore.com"
+              placeholder="Your admin email"
             />
           </div>
 

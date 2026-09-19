@@ -1,35 +1,42 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { Container } from './Container';
 import styles from './Navbar.module.css';
 import { WhatsAppButton } from './WhatsAppButton';
 import { ThemeToggle } from './ThemeToggle';
-import { useCart } from '../context/CartContext';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { getCartCount } = useCart();
-  const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const cartCount = getCartCount();
+  const getLinkClass = (path: string, isHash = false) => {
+    if (isHash) return styles.link;
+    if (path === '/' && pathname === '/') return `${styles.link} ${styles.active}`;
+    if (path !== '/' && pathname?.startsWith(path)) return `${styles.link} ${styles.active}`;
+    return styles.link;
+  };
 
   return (
     <nav className={styles.navbar}>
       <Container className={styles.container}>
         <Link href="/" className={styles.logo}>
-          <span className={styles.logoHighlight}>YOUR</span>STORE
+          <Image 
+            src="/images/vector-x-logo-final.png" 
+            alt="VECTOR-X SOLUTIONS" 
+            width={180} 
+            height={60} 
+            priority 
+          />
         </Link>
         
         <div className={styles.searchContainer}>
           <input 
             type="text" 
-            placeholder="Search motors, ESCs, propellers..." 
+            placeholder="Search projects, technologies..." 
             className={styles.searchInput} 
           />
           <button className={styles.searchBtn} aria-label="Search">
@@ -39,16 +46,14 @@ export const Navbar: React.FC = () => {
         
         <div className={`${styles.backdrop} ${isOpen ? styles.open : ''}`} onClick={() => setIsOpen(false)} />
         <div className={`${styles.links} ${isOpen ? styles.open : ''}`}>
-          <Link href="/#products" className={styles.link} onClick={() => setIsOpen(false)}>Products</Link>
-          <Link href="/#projects" className={styles.link} onClick={() => setIsOpen(false)}>Projects</Link>
-          <Link href="/build-your-project" className={styles.link} onClick={() => setIsOpen(false)}>Build Your Project</Link>
-          <Link href="/#about" className={styles.link} onClick={() => setIsOpen(false)}>About</Link>
-          <Link href="/#contact" className={styles.link} onClick={() => setIsOpen(false)}>Contact</Link>
+          <Link href="/portfolio" className={getLinkClass('/portfolio')} onClick={() => setIsOpen(false)}>Portfolio</Link>
+          <Link href="/services" className={getLinkClass('/services')} onClick={() => setIsOpen(false)}>Services</Link>
+          <Link href="/build-your-project" className={getLinkClass('/build-your-project')} onClick={() => setIsOpen(false)}>Build Your Project</Link>
+          <Link href="/workshops" className={getLinkClass('/workshops')} onClick={() => setIsOpen(false)}>Workshops & Training</Link>
+          <Link href="/#why-vector-x" className={getLinkClass('/#why-vector-x', true)} onClick={() => setIsOpen(false)}>About</Link>
+          <Link href="/#contact" className={getLinkClass('/#contact', true)} onClick={() => setIsOpen(false)}>Contact</Link>
           
           <div className={styles.mobileAction}>
-            <Link href="/cart" className={styles.cartLinkMobile} onClick={() => setIsOpen(false)}>
-              🛒 Cart {mounted && cartCount > 0 ? `(${cartCount})` : ''}
-            </Link>
             <ThemeToggle />
             <WhatsAppButton label="Enquire Now" />
           </div>
@@ -56,10 +61,6 @@ export const Navbar: React.FC = () => {
         
         <div className={styles.actions}>
           <div className={styles.desktopAction}>
-            <Link href="/cart" className={styles.cartLink} aria-label="Cart">
-              <span className={styles.cartIcon}>🛒</span>
-              {mounted && cartCount > 0 && <span className={styles.cartBadge}>{cartCount}</span>}
-            </Link>
             <ThemeToggle />
             <WhatsAppButton label="WhatsApp" />
           </div>
@@ -78,3 +79,5 @@ export const Navbar: React.FC = () => {
     </nav>
   );
 };
+
+

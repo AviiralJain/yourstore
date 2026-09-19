@@ -18,13 +18,13 @@ export const AIChat: React.FC = () => {
     {
       id: 'msg-1',
       sender: 'assistant',
-      text: "Hi! 👋 I'm YOURSTORE AI. I can help you find drone components, understand products, or plan your UAV project.",
+      text: "Hi! 👋 I'm VECTOR-X AI. I can help you find drone components, understand products, or plan your UAV project.",
       quickActions: [
         "Find a drone part",
         "Which motor should I choose?",
         "I need a flight controller",
         "Build a drone project",
-        "Talk to YOURSTORE"
+        "Talk to VECTOR-X"
       ]
     }
   ]);
@@ -94,11 +94,11 @@ export const AIChat: React.FC = () => {
           response = {
             id: `msg-${Date.now()}`,
             sender: 'assistant',
-            text: "Absolutely. YOURSTORE can help with custom UAV projects, including college projects, prototypes and application-specific builds.",
+            text: "Absolutely. VECTOR-X can help with custom UAV projects, including college projects, prototypes and application-specific builds.",
             quickActions: ["Start Your Project", "Chat on WhatsApp"]
           };
           break;
-        case "Talk to YOURSTORE":
+        case "Talk to VECTOR-X":
         case "Talk to an expert":
         case "Chat on WhatsApp":
           response = {
@@ -156,7 +156,7 @@ export const AIChat: React.FC = () => {
       <button 
         className={styles.fab} 
         onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Close AI Assistant" : "Ask YOURSTORE AI"}
+        aria-label={isOpen ? "Close AI Assistant" : "Ask VECTOR-X AI"}
         aria-expanded={isOpen}
         aria-controls="ai-chat-panel"
       >
@@ -171,7 +171,7 @@ export const AIChat: React.FC = () => {
         <div id="ai-chat-panel" className={styles.chatWindow}>
           <div className={styles.header}>
             <div className={styles.headerInfo}>
-              <h3 className={styles.title}>YOURSTORE AI</h3>
+              <h3 className={styles.title}>VECTOR-X AI</h3>
               <p className={styles.subtitle}>Your drone parts & project assistant</p>
             </div>
             <button className={styles.closeButton} onClick={() => setIsOpen(false)} aria-label="Close Chat">
@@ -188,7 +188,7 @@ export const AIChat: React.FC = () => {
                 
                 {msg.isWhatsApp && (
                   <a 
-                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi YOURSTORE, I need help with a drone component/project.")}`}
+                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi VECTOR-X, I need help with a drone component/project.")}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.whatsappLink}

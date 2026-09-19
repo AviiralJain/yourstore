@@ -43,7 +43,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: 'Products', path: '/admin/products', icon: <Package size={20} /> },
     { name: 'Categories', path: '/admin/categories', icon: <FolderTree size={20} /> },
     { name: 'Projects', path: '/admin/projects', icon: <Briefcase size={20} /> },
-    { name: 'Enquiries', path: '/admin/enquiries', icon: <MessageSquare size={20} /> },
+    { name: 'Project Enquiries', path: '/admin/project-enquiries', icon: <MessageSquare size={20} /> },
+    { name: 'Product Enquiries', path: '/admin/enquiries', icon: <MessageSquare size={20} /> },
     { name: 'Stock Alerts', path: '/admin/stock-notifications', icon: <Bell size={20} /> },
     { name: 'Reviews', path: '/admin/reviews', icon: <Star size={20} /> },
     { name: 'Security', path: '/admin/security', icon: <Shield size={20} /> },
@@ -53,7 +54,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className={styles.layout}>
       {/* Mobile Header */}
       <div className={styles.mobileHeader}>
-        <div className={styles.logo}>YOURSTORE ADMIN</div>
+        <div className={styles.logo}>VECTOR-X SOLUTIONS ADMIN</div>
         <button className={styles.menuButton} onClick={() => setIsMobileOpen(!isMobileOpen)}>
           {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -62,7 +63,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <aside className={`${styles.sidebar} ${isMobileOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.sidebarHeader}>
-          <div className={styles.logo}>YOURSTORE</div>
+          <div className={styles.logo}>VECTOR-X SOLUTIONS</div>
           <span className={styles.badge}>ADMIN</span>
         </div>
 

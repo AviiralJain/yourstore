@@ -7,7 +7,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { slug } = await params;
     await connectToDatabase();
     
-    const project = await Project.findOne({ slug, isActive: true }).lean();
+    const project = await Project.findOne({ slug, active: true }).populate('categoryId').lean();
 
     if (!project) {
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });

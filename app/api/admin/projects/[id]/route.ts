@@ -20,6 +20,28 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
     await connectToDatabase();
     
+    // Validate category and subcategory if provided
+    if (data.categoryId) {
+      const Category = (await import('@/lib/models/Category')).default;
+      const category = await Category.findById(data.categoryId);
+      if (!category) {
+        return NextResponse.json({ error: 'Invalid category' }, { status: 400 });
+      }
+    }
+    
+    if (data.subcategoryId) {
+      const Subcategory = (await import('@/lib/models/Subcategory')).default;
+      const subcategory = await Subcategory.findById(data.subcategoryId);
+      if (!subcategory) {
+        return NextResponse.json({ error: 'Invalid subcategory' }, { status: 400 });
+      }
+      
+      const categoryIdToCheck = data.categoryId || (await Project.findById(id).select('categoryId').lean())?.categoryId;
+      if (subcategory.categoryId.toString() !== categoryIdToCheck?.toString()) {
+        return NextResponse.json({ error: 'Subcategory does not belong to the selected category' }, { status: 400 });
+      }
+    }
+    
     if (data.slug) {
       const existing = await Project.findOne({ slug: data.slug, _id: { $ne: id } });
       if (existing) {

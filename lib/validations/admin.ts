@@ -20,13 +20,18 @@ export const SubcategorySchema = z.object({
 export const ProjectSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   slug: z.string().min(1, 'Slug is required').regex(/^[a-z0-9-]+$/, 'Slug must contain only lowercase letters, numbers, and hyphens'),
-  category: z.string().min(1, 'Category is required'),
-  client: z.string().optional(),
-  description: z.string().min(1, 'Description is required'),
+  categoryId: z.string().min(1, 'Category is required'),
+  subcategoryId: z.string().nullable().optional(),
   shortDescription: z.string().optional(),
+  fullDescription: z.string().optional(),
   images: z.array(z.string()).optional(),
-  isFeatured: z.boolean().optional(),
-  isActive: z.boolean().optional(),
+  technologies: z.array(z.string()).optional(),
+  hardware: z.array(z.string()).optional(),
+  software: z.array(z.string()).optional(),
+  features: z.array(z.string()).optional(),
+  projectType: z.string().optional(),
+  featured: z.boolean().optional(),
+  active: z.boolean().optional(),
 });
 
 export const ProductSchema = z.object({

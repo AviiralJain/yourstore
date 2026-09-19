@@ -58,7 +58,7 @@ function ResetPasswordForm() {
     return (
       <div className={styles.loginContainer}>
         <div className={styles.loginCard}>
-          <div className={styles.logo}>YOURSTORE</div>
+          <div className={styles.logo}>VECTOR-X SOLUTIONS</div>
           <h1 className={styles.title}>Password Reset</h1>
           <div style={{ backgroundColor: 'rgba(76, 175, 80, 0.1)', color: '#4CAF50', padding: '16px', borderRadius: '4px', textAlign: 'center' }}>
             Password reset successfully! Redirecting to login...
@@ -71,7 +71,7 @@ function ResetPasswordForm() {
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginCard}>
-        <div className={styles.logo}>YOURSTORE</div>
+        <div className={styles.logo}>VECTOR-X SOLUTIONS</div>
         <h1 className={styles.title}>Create New Password</h1>
         
         {error && <div className={styles.error}>{error}</div>}
