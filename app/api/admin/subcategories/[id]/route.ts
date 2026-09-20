@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from 'next/server';
+﻿import { NextResponse, NextRequest } from 'next/server';
 import connectToDatabase from '@/lib/db/mongodb';
 import Subcategory from '@/lib/models/Subcategory';
 import Product from '@/lib/models/Product';
@@ -35,7 +35,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     }
 
     return NextResponse.json({ success: true, subcategory }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return NextResponse.json({ error: "Invalid Subcategory ID format" }, { status: 400 });
+    }
     console.error('Error updating subcategory:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
@@ -66,8 +69,12 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     }
 
     return NextResponse.json({ success: true }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return NextResponse.json({ error: "Invalid Subcategory ID format" }, { status: 400 });
+    }
     console.error('Error deleting subcategory:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+

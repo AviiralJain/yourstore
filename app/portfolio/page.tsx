@@ -6,6 +6,7 @@ import { Footer } from '@/app/components/Footer';
 import { Container } from '@/app/components/Container';
 import connectToDatabase from '@/lib/db/mongodb';
 import Project from '@/lib/models/Project';
+import '@/lib/models/Media';
 import Category from '@/lib/models/Category';
 import Subcategory from '@/lib/models/Subcategory';
 import { PortfolioClient } from './PortfolioClient';
@@ -30,7 +31,7 @@ export default async function PortfolioPage() {
     Category.init().catch(() => {});
     Subcategory.init().catch(() => {});
     
-    const projects = await Project.find({ active: true }).sort({ createdAt: -1 }).lean() || [];
+    const projects = await Project.find({ active: true }).populate({ path: 'mediaIds', select: 'url altText' }).sort({ createdAt: -1 }).lean() || [];
     const categories = await Category.find({ isActive: true }).lean() || [];
     const subcategories = await Subcategory.find({ isActive: true }).lean() || [];
 
@@ -42,6 +43,7 @@ export default async function PortfolioPage() {
       shortDescription: p.shortDescription || '',
       fullDescription: p.fullDescription || '',
       images: p.images || [],
+      media: p.mediaIds || [],
       categoryId: p.categoryId ? p.categoryId.toString() : null,
       subcategoryId: p.subcategoryId ? p.subcategoryId.toString() : null,
       technologies: p.technologies || []
@@ -90,3 +92,4 @@ export default async function PortfolioPage() {
     </>
   );
 }
+

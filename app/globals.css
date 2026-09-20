@@ -78,3 +78,14 @@ a {
 button {
   font-family: inherit;
 }
+
+/* ADMIN THEME ISOLATION */
+.adminRoot {
+  --admin-bg: #050705;
+  --admin-bg-secondary: #080C09;
+  --admin-surface: #0B100C;
+  --admin-surface-hover: #111A13;
+  --admin-text: #F1F5F2;
+  --admin-text-muted: #89958C;
+  --admin-border: #1A291E;
+}

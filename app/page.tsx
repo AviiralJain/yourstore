@@ -132,7 +132,7 @@ export default function Home() {
               
               <div className={styles.workflowCard}>
                 <div className={styles.workflowImageContainer}>
-                  <Image src="/images/workflow/idea-final.jpg" alt="Engineering ideation, concept sketching and system planning" fill className={styles.workflowImage} />
+                  <Image src="/images/workflow/idea-final.jpg" alt="Engineering ideation, concept sketching and system planning" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className={styles.workflowImage} />
                 </div>
                 <div className={styles.workflowContent}>
                   <div className={styles.workflowCardNumber}>01</div>
@@ -143,7 +143,7 @@ export default function Home() {
 
               <div className={styles.workflowCard}>
                 <div className={styles.workflowImageContainer}>
-                  <Image src="/images/workflow/design.jpg" alt="CAD design work and engineering architecture" fill className={styles.workflowImage} />
+                  <Image src="/images/workflow/design.jpg" alt="CAD design work and engineering architecture" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className={styles.workflowImage} />
                 </div>
                 <div className={styles.workflowContent}>
                   <div className={styles.workflowCardNumber}>02</div>
@@ -154,7 +154,7 @@ export default function Home() {
 
               <div className={styles.workflowCard}>
                 <div className={styles.workflowImageContainer}>
-                  <Image src="/images/workflow/development.jpg" alt="Hands-on electronics and embedded hardware integration" fill className={styles.workflowImage} />
+                  <Image src="/images/workflow/development.jpg" alt="Hands-on electronics and embedded hardware integration" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className={styles.workflowImage} />
                 </div>
                 <div className={styles.workflowContent}>
                   <div className={styles.workflowCardNumber}>03</div>
@@ -165,7 +165,7 @@ export default function Home() {
 
               <div className={styles.workflowCard}>
                 <div className={styles.workflowImageContainer}>
-                  <Image src="/images/workflow/prototype-final.jpg" alt="Physical engineering prototype of a drone/robot" fill className={styles.workflowImage} />
+                  <Image src="/images/workflow/prototype-final.jpg" alt="Physical engineering prototype of a drone/robot" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className={styles.workflowImage} />
                 </div>
                 <div className={styles.workflowContent}>
                   <div className={styles.workflowCardNumber}>04</div>
@@ -176,7 +176,7 @@ export default function Home() {
 
               <div className={styles.workflowCard}>
                 <div className={styles.workflowImageContainer}>
-                  <Image src="/images/workflow/testing.jpg" alt="Engineering laboratory testing, validation and debugging" fill className={styles.workflowImage} />
+                  <Image src="/images/workflow/testing.jpg" alt="Engineering laboratory testing, validation and debugging" fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className={styles.workflowImage} />
                 </div>
                 <div className={styles.workflowContent}>
                   <div className={styles.workflowCardNumber}>05</div>

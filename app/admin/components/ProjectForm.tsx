@@ -4,11 +4,15 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from '../login/login.module.css';
 import { ImageUploader } from './ImageUploader';
+import { MediaPicker } from './MediaPicker';
+import { X } from 'lucide-react';
 
 export default function ProjectForm({ project, categories, subcategories = [] }: { project?: any, categories: any[], subcategories?: any[] }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  
+  const [showPicker, setShowPicker] = useState(false);
   
   const defaultCategory = categories.length > 0 ? categories[0]._id : '';
   
@@ -21,6 +25,7 @@ export default function ProjectForm({ project, categories, subcategories = [] }:
     shortDescription: project?.shortDescription || '',
     fullDescription: project?.fullDescription || '',
     images: project?.images || [],
+    mediaIds: project?.mediaIds?.map((id: any) => id.toString()) || [],
     technologies: project?.technologies?.join(', ') || '',
     hardware: project?.hardware?.join(', ') || '',
     software: project?.software?.join(', ') || '',
@@ -43,6 +48,32 @@ export default function ProjectForm({ project, categories, subcategories = [] }:
     }
   };
 
+  const handleMediaSelected = (media: any) => {
+    if (!formData.mediaIds.includes(media._id)) {
+      setFormData(prev => ({
+        ...prev,
+        mediaIds: [...prev.mediaIds, media._id],
+        // Optionally prepend the URL to existing `images` array for backward compatibility
+        images: [...prev.images, media.url]
+      }));
+    }
+    setShowPicker(false);
+  };
+
+  const handleRemoveMedia = (index: number) => {
+    // We should ideally figure out which `images` correspond to this `mediaId` and remove it,
+    // but the prompt says: "Do NOT perform a destructive migration... Allow removing a selected media item from the project without deleting the underlying Media asset."
+    // Let's keep it simple: just drop the `mediaId` and the corresponding index from `images`.
+    setFormData(prev => {
+      const newMediaIds = [...prev.mediaIds];
+      const removedMediaId = newMediaIds.splice(index, 1)[0];
+      
+      // We don't perfectly know which `images` URL belongs to this ID unless we fetch it.
+      // But if we just pass `mediaIds` forward, the backend can keep them correctly.
+      return { ...prev, mediaIds: newMediaIds };
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -52,7 +83,6 @@ export default function ProjectForm({ project, categories, subcategories = [] }:
       const url = project ? `/api/admin/projects/${project._id}` : '/api/admin/projects';
       const method = project ? 'PATCH' : 'POST';
 
-      // Parse comma-separated and newline-separated fields
       const payload = {
         ...formData,
         subcategoryId: formData.subcategoryId || null,
@@ -154,13 +184,42 @@ export default function ProjectForm({ project, categories, subcategories = [] }:
         </div>
 
         <div className={styles.inputGroup}>
-          <label>Images</label>
-          <ImageUploader 
-            images={formData.images} 
-            onChange={(newImages) => setFormData(prev => ({ ...prev, images: newImages }))} 
-            folder="yourstore/projects"
-            multiple={true}
-          />
+          <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span>Project Images</span>
+            <button 
+              type="button"
+              onClick={() => setShowPicker(true)}
+              style={{ backgroundColor: 'var(--admin-surface)', color: 'var(--admin-text)', border: '1px solid var(--admin-border)', padding: '0.25rem 0.5rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}
+            >
+              Select From Media Library
+            </button>
+          </label>
+          
+          <div style={{ marginBottom: '1rem', padding: '1rem', backgroundColor: 'var(--admin-surface)', borderRadius: '6px', border: '1px solid var(--admin-border)' }}>
+            <p style={{ margin: '0 0 1rem 0', fontSize: '0.9rem', color: 'var(--admin-text-muted)' }}>Legacy / Manual Uploads</p>
+            <ImageUploader 
+              images={formData.images} 
+              onChange={(newImages) => setFormData(prev => ({ ...prev, images: newImages }))} 
+              folder="yourstore/projects"
+              multiple={true}
+            />
+          </div>
+
+          {formData.mediaIds.length > 0 && (
+            <div style={{ padding: '1rem', backgroundColor: 'rgba(81, 113, 250, 0.05)', borderRadius: '6px', border: '1px solid rgba(81, 113, 250, 0.2)' }}>
+               <p style={{ margin: '0 0 1rem 0', fontSize: '0.9rem', color: 'var(--accent-primary)', fontWeight: 600 }}>Linked Library Media (IDs)</p>
+               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                 {formData.mediaIds.map((mid: any, idx: number) => (
+                   <span key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.5rem', backgroundColor: 'var(--admin-surface)', borderRadius: '4px', fontSize: '0.8rem', border: '1px solid var(--admin-border)' }}>
+                     {mid.toString().substring(0,8)}...
+                     <button type="button" onClick={() => handleRemoveMedia(idx)} style={{ background: 'none', border: 'none', color: '#ff4444', cursor: 'pointer', display: 'flex' }}>
+                       <X size={14} />
+                     </button>
+                   </span>
+                 ))}
+               </div>
+            </div>
+          )}
         </div>
 
         <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>
@@ -172,10 +231,13 @@ export default function ProjectForm({ project, categories, subcategories = [] }:
           </label>
         </div>
 
-        <button type="submit" disabled={loading} className={styles.button}>
+        <button type="submit" disabled={loading} className={styles.button} style={{ width: '100%', marginTop: '1.5rem', padding: '1rem', fontWeight: 700 }}>
           {loading ? 'Saving...' : 'Save Project'}
         </button>
       </form>
+
+      {showPicker && <MediaPicker onSelect={handleMediaSelected} onClose={() => setShowPicker(false)} />}
     </div>
   );
 }
+

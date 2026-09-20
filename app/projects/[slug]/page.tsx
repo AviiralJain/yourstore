@@ -9,6 +9,7 @@ import { WHATSAPP_NUMBER } from '@/app/lib/contact';
 import connectToDatabase from '@/lib/db/mongodb';
 import Project from '@/lib/models/Project';
 import Category from '@/lib/models/Category';
+import Media from '@/lib/models/Media';
 import styles from './ProjectDetail.module.css';
 import { Metadata } from 'next';
 import { ProjectGallery } from './ProjectGallery';
@@ -36,7 +37,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   
   const project = await Project.findOne({ slug, active: true })
     .populate('categoryId')
-    .populate('subcategoryId')
+    .populate('subcategoryId').populate({ path: 'mediaIds', select: 'url altText width height' })
     .lean();
 
   if (!project) {
@@ -56,11 +57,18 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       <main className={styles.main}>
         {/* HERO IMAGE */}
         <div className={styles.heroWrapper}>
-          {project.images && project.images.length > 0 ? (
-            <img src={project.images[0]} alt={project.title} className={styles.heroImage} />
-          ) : (
-            <div className={styles.heroPlaceholder}></div>
-          )}
+          {(() => {
+            const hasMedia = project.mediaIds && project.mediaIds.length > 0;
+            const hasImages = project.images && project.images.length > 0;
+            
+            if (hasMedia) {
+              const mainMedia = project.mediaIds[0] as any;
+              return <img src={mainMedia.url} alt={mainMedia.altText || project.title} className={styles.heroImage} />;
+            } else if (hasImages) {
+              return <img src={project.images[0]} alt={project.title} className={styles.heroImage} />;
+            }
+            return <div className={styles.heroPlaceholder}></div>;
+          })()}
           <div className={styles.heroOverlay}></div>
           <Container>
             <div className={styles.heroContent}>
@@ -134,12 +142,26 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 </div>
               )}
 
-              {project.images && project.images.length > 1 && (
-                <div className={styles.gallerySection}>
-                  <h3 className={styles.sectionTitle}>GALLERY</h3>
-                  <ProjectGallery images={project.images.slice(1)} title={project.title} />
-                </div>
-              )}
+              {(() => {
+                let galleryImages: string[] = [];
+                if (project.mediaIds && project.mediaIds.length > 1) {
+                  galleryImages = (project.mediaIds as any[]).slice(1).map(m => m.url);
+                } else if (!project.mediaIds || project.mediaIds.length === 0) {
+                  if (project.images && project.images.length > 1) {
+                    galleryImages = project.images.slice(1);
+                  }
+                }
+                
+                if (galleryImages.length > 0) {
+                  return (
+                    <div className={styles.gallerySection}>
+                      <h3 className={styles.sectionTitle}>GALLERY</h3>
+                      <ProjectGallery images={galleryImages} title={project.title} />
+                    </div>
+                  );
+                }
+                return null;
+              })()}
             </div>
             
             <div className={styles.sidebarColumn}>
@@ -169,4 +191,5 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     </>
   );
 }
+
 

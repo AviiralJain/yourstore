@@ -62,10 +62,15 @@ export async function POST(request: Request) {
       expiresAt,
     });
 
-    const appUrl = process.env.NEXTAUTH_URL || 'https://yourstore.com';
-    const resetUrl = `${appUrl}/admin/reset-password?token=${resetToken}`;
+    const appUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_SITE_URL;
+    const fromEmail = process.env.ADMIN_EMAIL_FROM;
 
-    const fromEmail = process.env.ADMIN_EMAIL_FROM || 'admin@yourstore.com';
+    if (!appUrl || !fromEmail) {
+      console.error('Password reset failed: NEXTAUTH_URL/NEXT_PUBLIC_SITE_URL or ADMIN_EMAIL_FROM is not configured.');
+      return NextResponse.json({ error: 'Email configuration error. Please contact support.' }, { status: 500 });
+    }
+
+    const resetUrl = `${appUrl}/admin/reset-password?token=${resetToken}`;
 
     await resend.emails.send({
       from: `VECTOR-X SOLUTIONS <${fromEmail}>`,

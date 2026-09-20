@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+﻿import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IProject extends Document {
   title: string;
@@ -8,6 +8,7 @@ export interface IProject extends Document {
   shortDescription?: string;
   fullDescription?: string;
   images: string[];
+  mediaIds?: mongoose.Types.ObjectId[];
   technologies: string[];
   hardware: string[];
   software: string[];
@@ -28,6 +29,7 @@ const ProjectSchema: Schema = new Schema(
     shortDescription: { type: String },
     fullDescription: { type: String },
     images: [{ type: String }],
+    mediaIds: [{ type: Schema.Types.ObjectId, ref: 'Media' }],
     technologies: [{ type: String }],
     hardware: [{ type: String }],
     software: [{ type: String }],

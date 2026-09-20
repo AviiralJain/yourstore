@@ -1,4 +1,4 @@
-import { z } from 'zod';
+﻿import { z } from 'zod';
 
 export const CategorySchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -25,6 +25,7 @@ export const ProjectSchema = z.object({
   shortDescription: z.string().optional(),
   fullDescription: z.string().optional(),
   images: z.array(z.string()).optional(),
+  mediaIds: z.array(z.string()).optional(),
   technologies: z.array(z.string()).optional(),
   hardware: z.array(z.string()).optional(),
   software: z.array(z.string()).optional(),
@@ -44,8 +45,10 @@ export const ProductSchema = z.object({
   description: z.string().optional(),
   specifications: z.array(z.object({ key: z.string(), value: z.string() })).optional(),
   images: z.array(z.string()).optional(),
+  mediaIds: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
   isActive: z.boolean().optional(),
   stockStatus: z.enum(['IN_STOCK', 'LOW_STOCK', 'OUT_OF_STOCK']).optional(),
   stockQuantity: z.number().int().min(0).optional().or(z.string().transform(val => val === '' ? undefined : Number(val)).pipe(z.number().int().min(0).optional())),
 });
+

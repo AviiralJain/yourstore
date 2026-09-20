@@ -36,8 +36,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     }
 
     return NextResponse.json({ success: true, enquiry });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return NextResponse.json({ error: "Invalid Enquiry ID format" }, { status: 400 });
+    }
     console.error('Error updating project enquiry status:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+

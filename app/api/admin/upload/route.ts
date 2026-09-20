@@ -1,6 +1,8 @@
-import { NextResponse, NextRequest } from 'next/server';
+﻿import { NextResponse, NextRequest } from 'next/server';
 import cloudinary from '@/lib/cloudinary/config';
 import { requireAdmin } from '@/lib/auth/adminAuth';
+import connectToDatabase from '@/lib/db/mongodb';
+import Media from '@/lib/models/Media';
 
 export const runtime = 'nodejs'; // Use node environment to handle buffer easily
 
@@ -57,13 +59,37 @@ export async function POST(request: NextRequest) {
       uploadStream.end(buffer);
     });
 
-    // 5. Return safely structured data
-    return NextResponse.json(
-      {
+    // 5. Save to MongoDB
+    await connectToDatabase();
+    
+    // Upsert or create Media record
+    let media = await Media.findOne({ publicId: result.public_id });
+    
+    if (!media) {
+      media = await Media.create({
         url: result.secure_url,
         publicId: result.public_id,
+        filename: file.name,
+        originalName: file.name,
+        mimeType: file.type,
         width: result.width,
         height: result.height,
+        title: file.name.split('.')[0] || 'Image',
+        folder: folder
+      });
+    }
+
+    // 6. Return safely structured data
+    return NextResponse.json(
+      {
+        _id: media._id,
+        url: media.url,
+        publicId: media.publicId,
+        width: media.width,
+        height: media.height,
+        filename: media.filename,
+        title: media.title,
+        altText: media.altText
       },
       { status: 200 }
     );

@@ -25,8 +25,8 @@ export default async function AdminProjectsPage() {
         {projects.length === 0 ? (
           <p style={{ color: 'var(--text-muted)' }}>No projects found.</p>
         ) : (
-          <div className={styles.tableContainer}>
-            <table className={styles.table}>
+          <div className={styles.tableResponsive}>
+            <table className={styles.adminTable} style={{ whiteSpace: 'nowrap' }}>
               <thead>
                 <tr>
                   <th>Title</th>

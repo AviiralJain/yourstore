@@ -1,3 +1,4 @@
+﻿import '@/lib/models/Media';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db/mongodb';
 import Project from '@/lib/models/Project';
@@ -8,7 +9,7 @@ export async function GET() {
     
     // Featured projects must be both active and featured
     const projects = await Project.find({ active: true, featured: true })
-      .populate('categoryId')
+      .populate('categoryId').populate({ path: 'mediaIds', select: 'url width height altText title' })
       .sort({ createdAt: -1 })
       .lean();
     
@@ -23,3 +24,5 @@ export async function GET() {
     return NextResponse.json({ error: 'Internal Server Error', message: error.message }, { status: 500 });
   }
 }
+
+

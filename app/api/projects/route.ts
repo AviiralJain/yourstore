@@ -1,3 +1,4 @@
+﻿import '@/lib/models/Media';
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/db/mongodb';
 import Project from '@/lib/models/Project';
@@ -5,7 +6,7 @@ import Project from '@/lib/models/Project';
 export async function GET() {
   try {
     await connectToDatabase();
-    const projects = await Project.find({ active: true }).populate('categoryId').sort({ createdAt: -1 }).lean();
+    const projects = await Project.find({ active: true }).populate('categoryId').populate({ path: 'mediaIds', select: 'url width height altText title' }).sort({ createdAt: -1 }).lean();
     
     const formattedProjects = projects.map((p: any) => ({
       ...p,
@@ -19,3 +20,5 @@ export async function GET() {
     return NextResponse.json({ error: 'Internal Server Error', message: error.message }, { status: 500 });
   }
 }
+
+

@@ -1,26 +1,23 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse, NextRequest } from 'next/server';
 import connectToDatabase from '@/lib/db/mongodb';
 import { Admin } from '@/lib/models/Admin';
+import { requireAdmin } from '@/lib/auth/adminAuth';
 import { verifyToken } from '@/lib/auth/jwt';
 import { validatePassword } from '@/lib/auth/passwordPolicy';
 import bcrypt from 'bcryptjs';
 
-export async function PATCH(request: Request) {
+export async function PATCH(request: NextRequest) {
   try {
-    const cookieHeader = request.headers.get('cookie');
-    let token = null;
+    const authError = await requireAdmin(request);
+    if (authError) return authError;
 
-    if (cookieHeader) {
-      const cookies = Object.fromEntries(
-        cookieHeader.split('; ').map(c => c.split('='))
-      );
-      token = cookies['admin_token'];
-    }
-
-    if (!token) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
+    const cookieHeader = request.headers.get('cookie') || '';
+    const cookies = Object.fromEntries(
+      cookieHeader.split(';').map(c => c.trim().split('='))
+    );
+    const token = cookies['admin_token'];
+    
+    // We already know it's valid from requireAdmin, but we need the payload to identify the user
     const payload = await verifyToken(token);
     if (!payload || !payload.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

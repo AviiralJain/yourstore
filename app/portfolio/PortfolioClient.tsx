@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { ProjectCard } from '@/app/components/ProjectCard';
 import { Container } from '@/app/components/Container';
 import styles from './portfolio.module.css';
@@ -26,6 +26,7 @@ interface Project {
   shortDescription: string;
   fullDescription: string;
   images: string[];
+  media?: { url: string, altText?: string }[];
   categoryId: string | null;
   subcategoryId: string | null;
   technologies: string[];
@@ -40,6 +41,7 @@ interface PortfolioClientProps {
 export const PortfolioClient: React.FC<PortfolioClientProps> = ({ projects, categories, subcategories }) => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   // Filter out categories that have no active projects
   const relevantCategories = useMemo(() => {
@@ -63,6 +65,24 @@ export const PortfolioClient: React.FC<PortfolioClientProps> = ({ projects, cate
   const handleCategoryClick = (catId: string | null) => {
     setActiveCategory(catId);
     setActiveSubcategory(null);
+    
+    // Scroll to grid when clicking 'ALL PROJECTS'
+    if (catId === null) {
+      setTimeout(() => {
+        const offset = 80; // approximate navbar height
+        if (gridRef.current) {
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = gridRef.current.getBoundingClientRect().top;
+          const elementPosition = elementRect - bodyRect;
+          const offsetPosition = elementPosition - offset;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 50);
+    }
   };
 
   const getCategoryName = (id: string | null) => {
@@ -122,27 +142,30 @@ export const PortfolioClient: React.FC<PortfolioClientProps> = ({ projects, cate
         </div>
 
         {/* PROJECT GRID */}
-        {filteredProjects.length > 0 ? (
-          <div className={styles.grid}>
-            {filteredProjects.map(project => (
-              <ProjectCard
-                key={project._id.toString()}
-                title={project.title}
-                projectType={project.projectType}
-                description={project.shortDescription || project.fullDescription}
-                image={project.images && project.images.length > 0 ? project.images[0] : undefined}
-                slug={project.slug}
-                category={getCategoryName(project.categoryId)}
-                subcategory={getSubcategoryName(project.subcategoryId)}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className={styles.emptyState}>
-            <p>No projects available for the selected filters.</p>
-          </div>
-        )}
+        <div ref={gridRef}>
+          {filteredProjects.length > 0 ? (
+            <div className={styles.grid}>
+              {filteredProjects.map(project => (
+                <ProjectCard
+                  key={project._id.toString()}
+                  title={project.title}
+                  projectType={project.projectType}
+                  description={project.shortDescription || project.fullDescription}
+                  image={project.media && project.media.length > 0 ? project.media[0].url : (project.images && project.images.length > 0 ? project.images[0] : undefined)}
+                  slug={project.slug}
+                  category={getCategoryName(project.categoryId)}
+                  subcategory={getSubcategoryName(project.subcategoryId)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className={styles.emptyState}>
+              <p>No projects available for the selected filters.</p>
+            </div>
+          )}
+        </div>
       </Container>
     </div>
   );
 };
+

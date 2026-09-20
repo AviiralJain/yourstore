@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Metadata } from 'next';
 import { Navbar } from '@/app/components/Navbar';
 import { PageHomeHint } from '@/app/components/PageHomeHint';
@@ -79,9 +79,6 @@ export default function WorkshopsPage() {
               <p className={styles.sectionSubtitle} style={{ marginBottom: 'var(--spacing-xl)' }}>
                 Tell us the technology, project, or skill you want to work with. We can discuss a customized training approach around your requirement.
               </p>
-              <Link href="/build-your-project" style={{ textDecoration: 'none' }}>
-                <Button variant="primary">DISCUSS TRAINING</Button>
-              </Link>
             </div>
           </Container>
         </section>

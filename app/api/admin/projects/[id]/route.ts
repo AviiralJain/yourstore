@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from 'next/server';
+﻿import { NextResponse, NextRequest } from 'next/server';
 import connectToDatabase from '@/lib/db/mongodb';
 import Project from '@/lib/models/Project';
 import { requireAdmin } from '@/lib/auth/adminAuth';
@@ -56,7 +56,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     }
 
     return NextResponse.json({ success: true, project }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return NextResponse.json({ error: "Invalid Project ID format" }, { status: 400 });
+    }
     console.error('Error updating project:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
@@ -78,8 +81,12 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     }
 
     return NextResponse.json({ success: true }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === "CastError" && error.kind === "ObjectId") {
+      return NextResponse.json({ error: "Invalid Project ID format" }, { status: 400 });
+    }
     console.error('Error deleting project:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+

@@ -3,6 +3,7 @@ import connectToDatabase from '@/lib/db/mongodb';
 import ProjectEnquiry from '@/lib/models/ProjectEnquiry';
 import { RateLimit } from '@/lib/models/RateLimit';
 import { z } from 'zod';
+import { createNotification } from '@/lib/services/notifications';
 
 const ProjectEnquirySchema = z.object({
   name: z.string().min(2, 'Name is too short').max(100, 'Name is too long'),
@@ -56,10 +57,36 @@ export async function POST(request: NextRequest) {
 
     await enquiry.save();
     
+    // Fire off notification without awaiting to not block the response
+    createNotification({
+      type: 'new_project_enquiry',
+      title: 'New Project Enquiry',
+      message: "New enquiry: " + (data.projectTitle || data.projectDomain),
+      enquiryId: enquiry._id.toString(),
+      link: '/admin/project-enquiries',
+      emailContent: {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        userType: data.userType,
+        projectDomain: data.projectDomain,
+        projectTitle: data.projectTitle,
+        timeline: data.timeline,
+        description: data.description
+      }
+    }).catch(console.error);
+    
     return NextResponse.json({ success: true, message: 'Project requirement submitted successfully', enquiryId: enquiry._id }, { status: 201 });
   } catch (error) {
     console.error('Error submitting project enquiry:', error instanceof Error ? error.message : 'Unknown error');
     return NextResponse.json({ error: 'Something went wrong while submitting your requirement. Please try again.' }, { status: 500 });
   }
 }
+
+
+
+
+
+
+
 
