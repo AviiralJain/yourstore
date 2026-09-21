@@ -7,6 +7,18 @@ import { ImageUploader } from './ImageUploader';
 import { MediaPicker } from './MediaPicker';
 import { X } from 'lucide-react';
 
+const slugify = (text: string) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
+
 export default function ProjectForm({ project, categories, subcategories = [] }: { project?: any, categories: any[], subcategories?: any[] }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -18,7 +30,6 @@ export default function ProjectForm({ project, categories, subcategories = [] }:
   
   const [formData, setFormData] = useState({
     title: project?.title || '',
-    slug: project?.slug || '',
     categoryId: project?.categoryId?._id || project?.categoryId || defaultCategory,
     subcategoryId: project?.subcategoryId?._id || project?.subcategoryId || '',
     projectType: project?.projectType || '',
@@ -85,6 +96,7 @@ export default function ProjectForm({ project, categories, subcategories = [] }:
 
       const payload = {
         ...formData,
+        slug: project ? project.slug : slugify(formData.title),
         subcategoryId: formData.subcategoryId || null,
         technologies: formData.technologies.split(',').map((s: string) => s.trim()).filter(Boolean),
         hardware: formData.hardware.split(',').map((s: string) => s.trim()).filter(Boolean),
@@ -123,8 +135,11 @@ export default function ProjectForm({ project, categories, subcategories = [] }:
             <input name="title" value={formData.title} onChange={handleChange} className={styles.input} required />
           </div>
           <div className={styles.inputGroup}>
-            <label>Slug (URL friendly)</label>
-            <input name="slug" value={formData.slug} onChange={handleChange} className={styles.input} required />
+            <label>Project URL</label>
+            <div style={{ padding: '0.6rem 0.75rem', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid var(--admin-border)', borderRadius: '4px', fontSize: '0.9rem', color: 'var(--admin-text-muted)' }}>
+              /projects/{project ? project.slug : slugify(formData.title)}
+            </div>
+            <small style={{ color: 'var(--admin-text-muted)', fontSize: '0.75rem', marginTop: '4px' }}>Automatically generated from the project title.</small>
           </div>
         </div>
 

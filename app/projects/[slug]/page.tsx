@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { notFound } from 'next/navigation';
 import { Navbar } from '@/app/components/Navbar';
 import { PageHomeHint } from '@/app/components/PageHomeHint';
@@ -13,6 +13,8 @@ import Media from '@/lib/models/Media';
 import styles from './ProjectDetail.module.css';
 import { Metadata } from 'next';
 import { ProjectGallery } from './ProjectGallery';
+import { LightboxProvider } from './LightboxProvider';
+import { InteractiveHeroImage } from './InteractiveHeroImage';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,6 +49,26 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const categoryName = project.categoryId?.name || '';
   const subcategoryName = project.subcategoryId?.name || '';
   
+  const allImages: { url: string, altText: string }[] = [];
+  const addedUrls = new Set<string>();
+
+  if (project.mediaIds && project.mediaIds.length > 0) {
+    project.mediaIds.forEach((m: any) => {
+      if (!addedUrls.has(m.url)) {
+        allImages.push({ url: m.url, altText: m.altText || project.title });
+        addedUrls.add(m.url);
+      }
+    });
+  }
+  if (project.images && project.images.length > 0) {
+    project.images.forEach((url: string) => {
+      if (!addedUrls.has(url)) {
+        allImages.push({ url, altText: project.title });
+        addedUrls.add(url);
+      }
+    });
+  }
+  
   const whatsappMessage = `Hi VECTOR-X, I'm interested in a project similar to ${project.title}. Please share more details.`;
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(whatsappMessage)}`;
 
@@ -54,18 +76,13 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     <>
       <Navbar />
       <PageHomeHint />
+      <LightboxProvider images={allImages}>
       <main className={styles.main}>
         {/* HERO IMAGE */}
         <div className={styles.heroWrapper}>
           {(() => {
-            const hasMedia = project.mediaIds && project.mediaIds.length > 0;
-            const hasImages = project.images && project.images.length > 0;
-            
-            if (hasMedia) {
-              const mainMedia = project.mediaIds[0] as any;
-              return <img src={mainMedia.url} alt={mainMedia.altText || project.title} className={styles.heroImage} />;
-            } else if (hasImages) {
-              return <img src={project.images[0]} alt={project.title} className={styles.heroImage} />;
+            if (allImages.length > 0) {
+              return <InteractiveHeroImage url={allImages[0].url} alt={allImages[0].altText} />;
             }
             return <div className={styles.heroPlaceholder}></div>;
           })()}
@@ -143,20 +160,13 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               )}
 
               {(() => {
-                let galleryImages: string[] = [];
-                if (project.mediaIds && project.mediaIds.length > 1) {
-                  galleryImages = (project.mediaIds as any[]).slice(1).map(m => m.url);
-                } else if (!project.mediaIds || project.mediaIds.length === 0) {
-                  if (project.images && project.images.length > 1) {
-                    galleryImages = project.images.slice(1);
-                  }
-                }
+                const galleryImages = allImages.slice(1).map(img => img.url);
                 
                 if (galleryImages.length > 0) {
                   return (
                     <div className={styles.gallerySection}>
                       <h3 className={styles.sectionTitle}>GALLERY</h3>
-                      <ProjectGallery images={galleryImages} title={project.title} />
+                      <ProjectGallery images={galleryImages} title={project.title} startIndex={1} />
                     </div>
                   );
                 }
@@ -187,6 +197,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           </div>
         </Container>
       </main>
+      </LightboxProvider>
       <Footer />
     </>
   );

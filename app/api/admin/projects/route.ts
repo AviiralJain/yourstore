@@ -10,6 +10,21 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     
+    if (!body.slug && body.title) {
+      body.slug = body.title
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
+    }
+    if (!body.slug) {
+      body.slug = 'project-' + Date.now();
+    }
+    
     const { ProjectSchema } = await import('@/lib/validations/admin');
     const parsed = ProjectSchema.safeParse(body);
     if (!parsed.success) {
@@ -38,10 +53,18 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    const existing = await Project.findOne({ slug: data.slug });
-    if (existing) {
-      return NextResponse.json({ error: 'Project slug already exists' }, { status: 409 });
+    let finalSlug = data.slug;
+    let slugExists = await Project.findOne({ slug: finalSlug });
+    let suffix = 2;
+    let originalSlug = finalSlug;
+
+    while (slugExists) {
+      finalSlug = `${originalSlug}-${suffix}`;
+      slugExists = await Project.findOne({ slug: finalSlug });
+      suffix++;
     }
+
+    data.slug = finalSlug;
 
     const project = new Project(data);
     await project.save();

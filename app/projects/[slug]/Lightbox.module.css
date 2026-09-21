@@ -1,0 +1,81 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.imageContainer {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  max-width: 1400px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+  transition: all 0.2s;
+}
+
+.closeBtn:hover { 
+  background: rgba(255,255,255,0.2); 
+  transform: scale(1.05);
+}
+
+.prevBtn, .nextBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+  transition: all 0.2s;
+}
+
+.prevBtn { left: 24px; }
+.nextBtn { right: 24px; }
+
+.prevBtn:hover, .nextBtn:hover { 
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-50%) scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .prevBtn { left: 16px; width: 44px; height: 44px; }
+  .nextBtn { right: 16px; width: 44px; height: 44px; }
+  .closeBtn { top: 16px; right: 16px; width: 40px; height: 40px; }
+  .imageContainer { width: 100vw; height: 100vh; }
+}
